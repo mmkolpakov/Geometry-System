@@ -67,18 +67,23 @@ Unlike simple embedding diagrams, this project simulates a "living" universe wit
 The simulation relies on a custom vertex shader implementation of the FLRW metric embedding:
 
 ### 1. Global Curvature (FLRW)
-The embedding height $z$ is calculated as function of radius $r$:
-$$ z(r) \approx \pm \sqrt{R^2 - r^2} \quad (\text{Spherical}) $$
-$$ z(r) \approx \text{arccosh}(r) \quad (\text{Hyperbolic}) $$
+The embedding height `z` is calculated as function of radius `r`:
+
+- **Spherical (Ω > 1)**: `z(r) ≈ ±√(R² - r²)`
+- **Hyperbolic (Ω < 1)**: `z(r) ≈ arccosh(r)`
 
 ### 2. Local Gravity Wells
 Massive bodies create local dips defined by Gaussian wells:
-$$ z_{local} = -\sum M_i \cdot e^{-k \cdot d_i^2} $$
+
+`z_local = -∑ M_i · e^(-k · d_i²)`
 
 ### 3. Keplerian Orbits
 Planets follow parametric elliptical paths:
-$$ x = a \cos(E) - c $$
-$$ y = b \sin(E) $$
+
+```
+x = a · cos(E) - c
+y = b · sin(E)
+```
 
 ## 🛠️ Tech Stack
 
