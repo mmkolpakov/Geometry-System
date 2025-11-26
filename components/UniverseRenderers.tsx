@@ -34,7 +34,7 @@ export const UniverseMesh: React.FC<{ state: SimulationState }> = ({ state }) =>
       materialRef.current.uniforms.uChaos.value = state.chaosMode ? 1.0 : 0.0;
       materialRef.current.uniforms.uChaosSpeed.value = state.chaosSpeed;
       materialRef.current.uniforms.uColorMode.value = state.colorTheme === 'cosmic' ? 1.0 : 0.0;
-      
+
       if (state.omega < 0.98) materialRef.current.uniforms.uColor.value.set('#ef4444');
       else if (state.omega > 1.02) materialRef.current.uniforms.uColor.value.set('#3b82f6');
       else materialRef.current.uniforms.uColor.value.set('#10b981');
@@ -45,12 +45,12 @@ export const UniverseMesh: React.FC<{ state: SimulationState }> = ({ state }) =>
     if (materialRef.current) {
       const time = rootState.clock.elapsedTime;
       materialRef.current.uniforms.uTime.value = time;
-      
+
       const { positions, masses } = getPlanetPositions(time);
       materialRef.current.uniforms.uGravPos.value = positions;
-      
+
       if (state.enableGravity) {
-          materialRef.current.uniforms.uGravMass.value = masses.map(m => m * (0.5 + state.precision * 0.5)); 
+          materialRef.current.uniforms.uGravMass.value = masses.map(m => m * (0.5 + state.precision * 0.5));
           materialRef.current.uniforms.uSunMass.value = 1.5 * (0.5 + state.precision * 0.5);
       } else {
           materialRef.current.uniforms.uGravMass.value = new Array(6).fill(0.0);
@@ -72,7 +72,7 @@ export const UniverseMesh: React.FC<{ state: SimulationState }> = ({ state }) =>
         side={THREE.DoubleSide}
         uniforms={uniforms}
         polygonOffset={true}
-        polygonOffsetFactor={1} 
+        polygonOffsetFactor={1}
         polygonOffsetUnits={1}
       />
     </mesh>

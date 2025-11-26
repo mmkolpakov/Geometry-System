@@ -80,7 +80,7 @@ const MoonContainer: React.FC<{ state: SimulationState }> = ({ state }) => {
             <group ref={groupRef}>
                 <CurvedMesh state={state} geometry={geometry} material={material} />
             </group>
-            <CurvedMesh state={state} geometry={orbitLineGeometry} material={orbitLineMaterial} as="line" />
+            {state.showTrajectories && (<CurvedMesh state={state} geometry={orbitLineGeometry} material={orbitLineMaterial} as="line"/>)}
         </>
     )
 }

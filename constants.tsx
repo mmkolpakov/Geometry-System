@@ -93,8 +93,6 @@ export const UNIVERSE_VERTEX_SHADER = `
 `;
 
 export const UNIVERSE_FRAGMENT_SHADER = `
-  #extension GL_OES_standard_derivatives : enable
-  
   uniform float uTime;
   uniform float uGridVisible;
   uniform vec3 uColor;
@@ -106,14 +104,14 @@ export const UNIVERSE_FRAGMENT_SHADER = `
   varying vec3 vViewPosition;
 
   void main() {
-    // 1. Grid Logic (Anti-aliased)
+    // 1. Grid Logic (Anti-aliased without fwidth for compatibility)
     float gridStrength = 0.0;
     if (uGridVisible > 0.5) {
         float scale = 20.0;
-        // fwidth is standard in modern GLSL
-        vec2 grid = abs(fract(vUv * scale - 0.5) - 0.5) / fwidth(vUv * scale);
-        float line = min(grid.x, grid.y);
-        gridStrength = 1.0 - min(line, 1.0);
+        vec2 gridUV = vUv * scale;
+        vec2 grid = fract(gridUV);
+        float line = min(min(grid.x, 1.0 - grid.x), min(grid.y, 1.0 - grid.y));
+        gridStrength = 1.0 - smoothstep(0.0, 0.05, line);
     }
 
     // 2. Lighting / Shading
