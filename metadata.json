@@ -1,5 +1,5 @@
 {
   "name": "Cosmos Curvature Lab",
-  "description": "An interactive astrophysical visualization of the FLRW metric, demonstrating how the density parameter Ω affects the geometry of the Universe (Euclidean, Hyperbolic, Spherical).",
+  "description": "An interactive astrophysical visualization of the FLRW metric, demonstrating how the density parameter Ω affects the geometry of the Universe (Euclidean, Hyperbolic, Spherical). Features Keplerian orbits, relativistic visual effects, and chaotic spacetime perturbations.",
   "requestFramePermissions": []
 }
