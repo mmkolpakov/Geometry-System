@@ -38,8 +38,8 @@ Unlike simple embedding diagrams, this project simulates a "living" universe wit
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/your-username/cosmos-curvature-lab.git
-    cd cosmos-curvature-lab
+    git clone https://github.com/mmkolpakov/Geometry-System.git
+    cd Geometry-System
     ```
 
 2.  **Install dependencies**
