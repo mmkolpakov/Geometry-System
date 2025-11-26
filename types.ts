@@ -1,3 +1,4 @@
+import React from 'react';
 
 export enum UniverseType {
   Open = 'Open (Hyperbolic)',
@@ -60,3 +61,25 @@ export const SCIENTISTS: Scientist[] = [
     quote: "Look deep into nature, and then you will understand everything better."
   }
 ];
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      ambientLight: any;
+      group: any;
+      mesh: any;
+      primitive: any;
+      shaderMaterial: any;
+      pointLight: any;
+      planeGeometry: any;
+      lineBasicMaterial: any;
+      line: any;
+      sphereGeometry: any;
+      ringGeometry: any;
+      coneGeometry: any;
+      points: any;
+      pointsMaterial: any;
+      bufferGeometry: any;
+    }
+  }
+}

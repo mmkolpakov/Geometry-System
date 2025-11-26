@@ -65,14 +65,22 @@ export const getPlanetPositions = (time: number) => {
 /**
  * Calculates the Z-height (Curvature) of the universe at specific coordinates.
  * Implements FLRW metric, Chaos noise, and Gravity Wells.
+ *
+ * @param x World X coordinate
+ * @param y World Y coordinate (which is -Z in Three.js terms)
+ * @param state Simulation State
+ * @param time Elapsed time
  */
 export const getSurfaceZ = (x: number, y: number, state: SimulationState, time: number): number => {
-    if (!Number.isFinite(x) || !Number.isFinite(y)) return 0;
-    
+    // Input validation
+    if (!Number.isFinite(x) || !Number.isFinite(y)) {
+        return 0;
+    }
+
     const nx = x / UNIVERSE_SCALE;
     const ny = y / UNIVERSE_SCALE;
     const distSq = nx*nx + ny*ny;
-    
+
     let z = 0.0;
     const omega = Number.isFinite(state.omega) ? state.omega : 1.0;
 
@@ -80,25 +88,25 @@ export const getSurfaceZ = (x: number, y: number, state: SimulationState, time: 
     if (omega > 1.02) {
          // Spherical (Closed)
          const factor = (omega - 1.0) * 2.0 * EXAGGERATION;
-         z -= factor * (distSq * 2.0); 
+         z -= factor * (distSq * 2.0);
     } else if (omega < 0.98) {
          // Hyperbolic (Open)
          const factor = (1.0 - omega) * 2.0 * EXAGGERATION;
          z += factor * (nx*nx - ny*ny) * 2.0;
     }
-    
+
     // 2. Chaos Mode (Early Universe / Gravitational Waves)
     if (state.chaosMode) {
          const speed = Number.isFinite(state.chaosSpeed) ? state.chaosSpeed : 1.0;
          const t = time * speed;
-         
+
          // Multi-layered sine noise
          let chaos = Math.sin(x * 0.5 + t) * Math.sin(y * 0.5 + t) * 0.5;
          chaos += Math.sin(x * 1.5 - t * 0.5) * 0.25;
          chaos += Math.cos(y * 1.5 + t * 0.5) * 0.25;
          const len = Math.sqrt(x*x + y*y);
          chaos += Math.sin(len * 0.3 - t * 2.0) * 0.1;
-         
+
          z += chaos * EXAGGERATION;
     }
 
@@ -110,18 +118,19 @@ export const getSurfaceZ = (x: number, y: number, state: SimulationState, time: 
             const dx = x - positions[i].x;
             const dy = y - positions[i].y;
             const dSq = dx*dx + dy*dy;
-            const m = masses[i] * (0.5 + state.precision * 0.5); 
+            const m = masses[i] * (0.5 + state.precision * 0.5);
             if (m > 0) {
                 z -= m * Math.exp(-dSq * GRAVITY_WELL_WIDTH);
             }
         }
-        
+
         // Sun (at 0,0)
         const dSqSun = x*x + y*y;
         const sunMass = 1.5 * (0.5 + state.precision * 0.5);
         z -= sunMass * Math.exp(-dSqSun * SUN_GRAVITY_WIDTH);
     }
-    
-    if (isNaN(z)) return 0;
+
+    // Output validation
+    if (isNaN(z) || !Number.isFinite(z)) return 0;
     return z;
 };
