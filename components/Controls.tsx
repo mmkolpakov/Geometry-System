@@ -10,7 +10,8 @@ import {
   Globe,
   Cpu,
   Layers,
-  Palette
+  Palette,
+  Anchor
 } from 'lucide-react';
 import { SimulationState, Scientist, SCIENTISTS, UniverseType } from '../types';
 
@@ -135,6 +136,12 @@ export const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
                 onChange={(v) => updateState({ chaosSpeed: v })} 
               />
             )}
+            
+            <Toggle 
+              label="Local Gravity (Mass)" 
+              active={state.enableGravity} 
+              onClick={() => updateState({ enableGravity: !state.enableGravity })} 
+            />
           </div>
           
           <div className="border-t border-white/10 pt-3 mt-2">
@@ -167,8 +174,8 @@ export const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
                     : 'bg-white/10 hover:bg-white/20'
                 }`}
              >
-                {state.antMode ? <Eye size={18}/> : <PlayCircle size={18} />}
-                {state.antMode ? 'Exit Ant Mode' : 'Become Ant'}
+                {state.antMode ? <Eye size={18}/> : <Globe size={18} />}
+                {state.antMode ? 'Exit Earth View' : 'Earth View'}
              </button>
         </GlassPanel>
       </div>
@@ -196,9 +203,19 @@ export const Controls: React.FC<ControlsProps> = ({ state, updateState }) => {
                 <span className="text-xs font-semibold">Layers</span>
              </div>
              <Toggle 
+               label="Universe Grid" 
+               active={state.showUniverseGrid} 
+               onClick={() => updateState({ showUniverseGrid: !state.showUniverseGrid })} 
+             />
+             <Toggle 
                label="2D Triangle (Geodesic)" 
                active={state.showGeometry} 
                onClick={() => updateState({ showGeometry: !state.showGeometry })} 
+             />
+             <Toggle 
+               label="3D Grid (Volumetric)" 
+               active={state.showVolumetricGrid} 
+               onClick={() => updateState({ showVolumetricGrid: !state.showVolumetricGrid })} 
              />
              <Toggle 
                label="3D Pyramid (Volume)" 

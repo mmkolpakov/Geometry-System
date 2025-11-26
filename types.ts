@@ -10,10 +10,13 @@ export interface SimulationState {
   chaosMode: boolean;
   chaosSpeed: number;
   precision: number; // 0.0 to 1.0
-  showGeometry: boolean;
+  enableGravity: boolean; // New: Local mass distortion toggle
+  showUniverseGrid: boolean; // New: The main mesh grid
+  showGeometry: boolean; // The 2D Triangle
   show3DFigure: boolean; // New: Tetrahedron/Pyramid
   showCelestial: boolean;
   showTrajectories: boolean; // New: Orbit lines
+  showVolumetricGrid: boolean; // New: 3D Grid points
   colorTheme: 'scientific' | 'cosmic'; // New: Visual Style
   antMode: boolean;
   zoom: number;
