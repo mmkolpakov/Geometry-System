@@ -4,6 +4,16 @@ An interactive geometry and three-body laboratory inspired by Liu Cixin’s tril
 
 The interface is available in **Russian and Simplified Chinese**. This README and the [model notes](docs/models.md) are in English.
 
+## A look inside
+
+<img src="docs/images/geometry-desktop.png" alt="Russian desktop interface: a spherical triangle with three 90-degree angles and a size control" width="780">
+
+*Geometry on a sphere: three right angles, measured on the surface.*
+
+<img src="docs/images/threebody-mobile.png" alt="Simplified Chinese mobile interface showing the figure-eight solution for three equal masses" width="280">
+
+*The same laboratory on a narrow screen, with Simplified Chinese controls.*
+
 ## Explore
 
 - **Curious about geometry?** Start with a triangle on the plane, switch to the sphere, and compare the angle sums. Open the formulas when you want the details.
