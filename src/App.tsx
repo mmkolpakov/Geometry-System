@@ -35,7 +35,16 @@ import {
   type Session,
 } from "./state/session";
 
-const SystemScene = lazy(() => import("./features/SystemScene").then(module => ({ default: module.SystemScene })));
+const StoryExplorer = lazy(() =>
+  import("./features/StoryExplorer").then((module) => ({
+    default: module.StoryExplorer,
+  })),
+);
+const SystemScene = lazy(() =>
+  import("./features/SystemScene").then((module) => ({
+    default: module.SystemScene,
+  })),
+);
 
 export default function App() {
   const [session, setSession] = useState(() => readSession(location.search));
@@ -50,11 +59,25 @@ function StoryDisclosure({ children }: { children: React.ReactNode }) {
   const { t } = useLocale();
   const [revealed, setRevealed] = useState(false);
   return (
-    <section className="formula-card story-disclosure" aria-label={t("Литературный контекст и источники")}>
+    <section
+      className="formula-card story-disclosure"
+      aria-label={t("Литературный контекст и источники")}
+    >
       <h3>{t("Связь с книгой — по желанию")}</h3>
-      <p>{t("Сюжетные подробности и ссылки могут раскрыть события трилогии. Научный опыт и вопросы доступны без них.")}</p>
-      <button type="button" className="text-button" aria-expanded={revealed} onClick={() => setRevealed(value => !value)}>
-        {revealed ? t("Скрыть сюжетный контекст") : t("Показать сюжетный контекст")}
+      <p>
+        {t(
+          "Сюжетные подробности и ссылки могут раскрыть события трилогии. Научный опыт и вопросы доступны без них.",
+        )}
+      </p>
+      <button
+        type="button"
+        className="text-button"
+        aria-expanded={revealed}
+        onClick={() => setRevealed((value) => !value)}
+      >
+        {revealed
+          ? t("Скрыть сюжетный контекст")
+          : t("Показать сюжетный контекст")}
       </button>
       {revealed && <div data-testid="story-content">{children}</div>}
     </section>
@@ -89,10 +112,14 @@ function AppContent({
   const resetButton = useRef<HTMLButtonElement>(null);
   const current = lessons[Math.min(session.lesson, lessons.length - 1)];
   const update = (patch: Partial<Session>) => {
-    if (patch.view !== undefined || patch.lesson !== undefined) {
+    if (
+      patch.view !== undefined ||
+      patch.lesson !== undefined ||
+      patch.storyChapter !== undefined
+    ) {
       pushNavigation.current = true;
       focusNext.current = true;
-      setStoryEpoch(value => value + 1);
+      setStoryEpoch((value) => value + 1);
     }
     setSession((previous) => ({ ...previous, ...patch }));
   };
@@ -115,7 +142,7 @@ function AppContent({
   useEffect(() => {
     const listener = () => {
       focusNext.current = true;
-      setStoryEpoch(value => value + 1);
+      setStoryEpoch((value) => value + 1);
       setSession(readSession(location.search));
     };
     const progressListener = (event: StorageEvent) => {
@@ -190,6 +217,7 @@ function AppContent({
         />
       ) : (
         <ThreeBodyLab
+          key={`lab-${storyEpoch}-${session.language}`}
           preset={session.preset}
           onPresetChange={(preset) =>
             update({ preset, sampleIndex: 0, comparisonEnabled: false })
@@ -246,18 +274,16 @@ function AppContent({
           <span className="brand-mark">
             <Orbit size={25} />
           </span>
-          <span>
-            {t("контур")}
-
-          </span>
+          <span>{t("контур")}</span>
         </a>
         <nav aria-label={t("Основная навигация")}>
           {(
             [
               { id: "systems", name: t("Системы"), icon: Orbit },
+              { id: "story", name: t("История"), icon: BookOpen },
               { id: "journey", name: t("Маршрут"), icon: Compass },
               { id: "lab", name: t("Лаборатория"), icon: FlaskConical },
-              { id: "library", name: t("Основания"), icon: BookOpen },
+              { id: "library", name: t("Источники"), icon: BookOpen },
             ] as const
           ).map((item) => (
             <button
@@ -288,7 +314,7 @@ function AppContent({
         <section className="share-fallback" aria-label={t("Ссылка на опыт")}>
           <p role="status">
             {t(
-              "Буфер обмена недоступен. Выделите ссылку и скопируйте её вручную.",
+              "Не удалось скопировать ссылку. Выделите её и скопируйте вручную.",
             )}
           </p>
           <label htmlFor="share-url">{t("Ссылка на опыт")}</label>
@@ -317,16 +343,45 @@ function AppContent({
         {session.view === "systems" && (
           <section className="systems-page">
             <div className="system-page-heading">
-              <h1 ref={pageHeading} tabIndex={-1}>{t("Миры в движении")}</h1>
-              <p>{t("От Солнечной системы к трём солнцам. Выберите мир, поверните его и проследите путь планеты.")}</p>
+              <h1 ref={pageHeading} tabIndex={-1}>
+                {t("Солнечная система и три солнца")}
+              </h1>
+              <p>
+                {t(
+                  "Выберите планету, рассмотрите её вблизи и проследите за движением по орбите.",
+                )}
+              </p>
             </div>
             <Suspense fallback={<p role="status">{t("Загружаем сцену…")}</p>}>
-              <SystemScene key={`system-${storyEpoch}-${session.language}`} system={session.system} onSystemChange={system => update({ system, systemTime: 0 })} time={session.systemTime} onTimeChange={systemTime => update({ systemTime })} />
+              <SystemScene
+                key={`system-${storyEpoch}-${session.language}`}
+                system={session.system}
+                onSystemChange={(system) => update({ system, systemTime: 0 })}
+                time={session.systemTime}
+                onTimeChange={(systemTime) => update({ systemTime })}
+              />
             </Suspense>
             <div className="system-learning-link">
-              <span>{t("Почему меняются орбиты и геометрия?")}</span>
-              <button className="text-button" onClick={() => openLesson(0)}>{t("К шести опытам")} <ArrowRight size={16} /></button>
+              <button
+                className="text-button"
+                onClick={() => update({ view: "story" })}
+              >
+                {t("История трёх тел")} <ArrowRight size={16} />
+              </button>
+              <button className="text-button" onClick={() => openLesson(0)}>
+                {t("К шести опытам")} <ArrowRight size={16} />
+              </button>
             </div>
+          </section>
+        )}
+        {session.view === "story" && (
+          <section className="story-page">
+            <Suspense fallback={<p role="status">{t("Загружаем сцену…")}</p>}>
+              <StoryExplorer
+                chapter={session.storyChapter}
+                onChapterChange={(storyChapter) => update({ storyChapter })}
+              />
+            </Suspense>
           </section>
         )}
         {session.view === "journey" && (
@@ -438,7 +493,7 @@ function AppContent({
                 <CheckCircle2 size={16} />
                 {locale === "zh-CN"
                   ? `已核对 ${completed.length} / ${lessons.length}`
-                  : `${completed.length} из ${lessons.length}: ответы проверены`}
+                  : `Проверено: ${completed.length} из ${lessons.length}`}
               </span>
             </div>
             <div className="progress-actions">
@@ -514,9 +569,7 @@ function AppContent({
                 <div className="sidebar-note">
                   <GraduationCap size={20} />
                   <p>
-                    {t(
-                      "Здесь нет нужного уровня подготовки. Начните с наблюдения, а формулы откройте, когда захотите.",
-                    )}
+                    {t("Начните с наблюдения. Формулы можно открыть позже.")}
                   </p>
                 </div>
               </aside>
@@ -536,19 +589,21 @@ function AppContent({
                     {current.question}
                   </h2>
                   <p>{current.scienceContext}</p>
-                  <StoryDisclosure key={`story-${storyEpoch}-${session.lesson}-${session.view}-${locale}`}>
+                  <StoryDisclosure
+                    key={`story-${storyEpoch}-${session.lesson}-${session.view}-${locale}`}
+                  >
                     <p>{current.context}</p>
-                  {current.source && (
-                    <a
-                      className="context-source"
-                      href={current.source.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {current.source.title}
-                      <ExternalLink size={12} />
-                    </a>
-                  )}
+                    {current.source && (
+                      <a
+                        className="context-source"
+                        href={current.source.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {current.source.title}
+                        <ExternalLink size={12} />
+                      </a>
+                    )}
                   </StoryDisclosure>
                   {current.hypothesis && (
                     <p className="hypothesis">
@@ -575,7 +630,9 @@ function AppContent({
                     onClick={() => update({ advanced: !session.advanced })}
                   >
                     <Layers3 size={15} />
-                    {session.advanced ? t("С формулами") : t("Без формул")}
+                    {session.advanced
+                      ? t("Скрыть формулы")
+                      : t("Показать формулы")}
                     <span
                       className={"switch " + (session.advanced ? "on" : "")}
                     />
@@ -637,7 +694,7 @@ function AppContent({
                     {answerCorrect !== null && (
                       <strong>
                         {answerCorrect
-                          ? t("Верно. Вывод подтверждён.")
+                          ? t("Верно.")
                           : t(
                               "Пока не совсем. Сверьте вывод с опытом и попробуйте снова.",
                             )}
@@ -675,7 +732,6 @@ function AppContent({
               <h1 ref={pageHeading} tabIndex={-1}>
                 {t("Лаборатория")}
               </h1>
-
             </div>
             <div className="standalone-toolbar">
               <div className="segmented" aria-label={t("Лаборатория")}>
@@ -722,7 +778,6 @@ function AppContent({
         {session.view === "library" && (
           <section className="standalone library">
             <div className="page-heading">
-              <p className="eyebrow dark">{t("ПРОВЕРЯЕМЫЕ ОСНОВАНИЯ")}</p>
               <h1 ref={pageHeading} tabIndex={-1}>
                 {t("Модели и источники")}
               </h1>
@@ -765,25 +820,32 @@ function AppContent({
               {t("Источники и дальнейшее чтение")}
             </h2>
             <div className="source-list">
-              {sources.filter(s => !s.literary).map((s, i) => (
-                <a key={s.url} href={s.url} target="_blank" rel="noreferrer">
-                  <span className="source-number">0{i + 1}</span>
-                  <span>
-                    <small>{s.organization}</small>
-                    <h3>{s.title}</h3>
-                    <p>{s.note}</p>
-                  </span>
-                  <ExternalLink size={18} />
-                </a>
-              ))}
+              {sources
+                .filter((s) => !s.literary)
+                .map((s, i) => (
+                  <a key={s.url} href={s.url} target="_blank" rel="noreferrer">
+                    <span className="source-number">0{i + 1}</span>
+                    <span>
+                      <small>{s.organization}</small>
+                      <h3>{s.title}</h3>
+                      <p>{s.note}</p>
+                    </span>
+                    <ExternalLink size={18} />
+                  </a>
+                ))}
             </div>
             <StoryDisclosure key={`library-story-${storyEpoch}-${locale}`}>
-              {sources.filter(s => s.literary).map(source => (
-                <p key={source.url}>
-                  <a href={source.url} target="_blank" rel="noreferrer">{source.title} ↗</a>
-                  <br />{source.note}
-                </p>
-              ))}
+              {sources
+                .filter((s) => s.literary)
+                .map((source) => (
+                  <p key={source.url}>
+                    <a href={source.url} target="_blank" rel="noreferrer">
+                      {source.title} ↗
+                    </a>
+                    <br />
+                    {source.note}
+                  </p>
+                ))}
             </StoryDisclosure>
             <div className="method-note">
               <BookOpen size={22} />
@@ -811,11 +873,7 @@ function AppContent({
           <Orbit size={18} />
           {t("контур")}
         </span>
-        <span>
-          {t(
-            "Геометрия и орбиты · Лю Цысинь",
-          )}
-        </span>
+        <span>{t("Геометрия и орбиты · Лю Цысинь")}</span>
         <a
           href="https://github.com/mmkolpakov/Geometry-System"
           target="_blank"

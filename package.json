@@ -1,7 +1,7 @@
 {
   "name": "kontur-universe-lab",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -14,6 +14,7 @@
     "check": "npm run typecheck && npm test && npm run build && npm run test:e2e"
   },
   "dependencies": {
+    "astronomy-engine": "2.1.19",
     "d3-geo": "3.1.1",
     "gl-matrix": "3.4.4",
     "i18next": "25.8.13",

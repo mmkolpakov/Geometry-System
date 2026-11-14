@@ -90,13 +90,32 @@ test("44px targets and text-spacing survive compact layout", async ({
   ).toBe(true);
 });
 
-test('200% text reflows on the narrow screen in both languages', async ({page})=>{
- await page.setViewportSize({width:320,height:900});
- for (const lang of ['ru','zh-CN']) {
-  for (const view of ['journey','lab','library']) {
-   await page.goto(`/?lang=${lang}&view=${view}`);
-   await page.addStyleTag({content:'html{font-size:200%}'});
-   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+test("200% text reflows on the narrow screen in both languages", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  for (const lang of ["ru", "zh-CN"]) {
+    for (const view of ["systems", "story", "journey", "lab", "library"]) {
+      await page.goto(`/?lang=${lang}&view=${view}`);
+      if (view === "story")
+        await page
+          .getByRole("button", {
+            name: lang === "ru" ? "Открыть историю" : "打开故事",
+            exact: true,
+          })
+          .click();
+      await page.addStyleTag({ content: "html{font-size:200%}" });
+      if (view === "story") {
+        await page.locator(".story-timeline button").nth(8).click();
+        const icon = page.locator(".story-controls button svg").first();
+        expect((await icon.boundingBox())?.width).toBeLessThanOrEqual(20);
+        expect((await icon.boundingBox())?.height).toBeLessThanOrEqual(20);
+      }
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+    }
   }
- }
 });

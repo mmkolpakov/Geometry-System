@@ -1,6 +1,6 @@
 # Kontur · Контур · 界线
 
-Explore the Solar System and a world with three suns, then test the geometry and motion behind what you see. Rotate the view, follow a planet, or compare nearby initial conditions in six guided experiments inspired by Liu Cixin’s trilogy.
+Explore the Solar System and a world with three suns. Rotate the view, follow a planet, or walk through twelve scenes from Liu Cixin’s trilogy. Six experiments connect the story to geometry, gravity and the limits of prediction.
 
 The interface is available in **Russian and Simplified Chinese**. This README and the [model notes](docs/models.md) are in English.
 
@@ -16,10 +16,14 @@ The interface is available in **Russian and Simplified Chinese**. This README an
 
 *Three suns and a moving planet: follow its path and the changing light.*
 
+<img src="docs/images/first-signal.png" alt="The first signal from Earth through the Sun, with three selectable stages and a linked explanation" width="820">
+
+*The story begins with the first signal from Earth. Later scenes include spoilers for all three books.*
+
 ## Explore
 
-- **Curious about space?** Start with the Solar System. Select a planet, rotate the camera and change the playback speed. The three-sun view follows a planet in the combined field of three stars.
-- **Coming from the books or series?** Each experiment connects a scientific question to a literary idea. Story details and related links open only after a spoiler warning.
+- **Curious about space?** Start with the Solar System. Select a date, compare overview and 1:1 scales, follow a planet or show the gravity grid. The three-sun view follows a planet in the combined field of three stars.
+- **Coming from the books or series?** Follow the twelve-scene story from the first signal to fleet battles and the destruction of both systems. Each scene has three stages, sources and a scientific question; the full-story route opens after a spoiler warning.
 - **Preparing a lesson?** Ask for a prediction, change one parameter, and discuss the result. The three-body lab supports pause, step and reset; a shared URL reproduces the selected parameters and frame.
 - **Reviewing the code?** Read the [equations, assumptions and sources](docs/models.md), then inspect `src/domain/` and its tests. The plots and numerical readouts use the same model data.
 
@@ -60,7 +64,7 @@ Static files are written to `dist/`. They can be hosted on a static web server, 
 
 ## Code and models
 
-`src/domain/` contains calculations, `src/features/` the interactive views, `src/content/` lessons and translations, and `src/state/` URL validation and local storage. Three.js and OrbitControls render the system views. ODEX provides numerical integration, d3-geo spherical operations, gl-matrix rotations, and i18next translation lookup.
+`src/domain/` contains calculations, `src/features/` the interactive views, `src/content/` lessons and translations, and `src/state/` URL validation and local storage. Three.js and OrbitControls render the system views. Astronomy Engine calculates planetary positions; NASA maps provide surface and star textures. ODEX supplies numerical integration, d3-geo spherical operations, gl-matrix rotations and i18next translation lookup.
 
 The [model notes](docs/models.md) explain the equations, units, numerical stopping conditions and scientific limits. Changes to a model should include a reproducible numerical check; changes to navigation should preserve shared links, keyboard controls and the choice to reveal story details.
 

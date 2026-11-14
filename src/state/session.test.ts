@@ -10,6 +10,14 @@ import {
   sessionQuery,
 } from "./session";
 describe("share state", () => {
+  it("round trips the selected story case without permission flags", () => {
+    const state={...defaults,view:"story" as const,storyChapter:9};
+    expect(readSession("?"+sessionQuery(state))).toEqual(state);
+    expect(readSession("?view=story&chapter=999").storyChapter).toBe(11);
+    expect(readSession("?view=story&chapter=NaN").storyChapter).toBe(0);
+    expect(sessionQuery(state)).not.toMatch(/consent|spoiler/);
+  });
+
   it("opens the system explorer while preserving old direct lesson links", () => {
     expect(readSession("")).toMatchObject({view:"systems",system:"solar",systemTime:0});
     expect(readSession("?lesson=2")).toMatchObject({view:"journey",lesson:2});

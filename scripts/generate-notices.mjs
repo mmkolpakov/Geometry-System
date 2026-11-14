@@ -17,6 +17,7 @@ for (const [path, pkg] of Object.entries(lock.packages)) {
   result += `## ${path.replace(/^node_modules\//, "")} ${pkg.version}\n\nLicense: ${pkg.license ?? "see package"}\n\n`;
   if (candidate) result += readFileSync(join(path, candidate), "utf8") + "\n\n";
 }
+if (existsSync("public/textures/CREDITS.txt")) result += "\n# Texture credits\n\n" + readFileSync("public/textures/CREDITS.txt", "utf8");
 mkdirSync("public", { recursive: true });
 writeFileSync(
   "public/THIRD_PARTY_NOTICES.txt",

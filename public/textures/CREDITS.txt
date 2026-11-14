@@ -1,0 +1,23 @@
+Mars, Jupiter and Saturn maps: NASA 3D Resources.
+Original JPEG files, unmodified; local filenames shortened.
+https://github.com/nasa/NASA-3D-Resources
+The repository describes these assets as free and without copyright.
+NASA media usage guidelines: https://www.nasa.gov/nasa-brand-center/images-and-media/
+Credit: NASA. No NASA endorsement is implied.
+
+Mars: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/Images%20and%20Textures/Mars/Mars.jpg
+Jupiter: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/Images%20and%20Textures/Jupiter/Jupiter.jpg
+Saturn: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/Images%20and%20Textures/Saturn/Saturn.jpg
+
+Earth: Blue Marble - A Seamless Image Mosaic of the Earth.
+NASA/Goddard Space Flight Center Scientific Visualization Studio.
+Blue Marble data courtesy of Reto Stockli (NASA/GSFC) and NASA Earth Observatory.
+Original true-color 1024 x 512 PNG mosaic, unmodified.
+https://svs.gsfc.nasa.gov/2915/
+https://svs.gsfc.nasa.gov/vis/a000000/a002900/a002915/bluemarble-1024.png
+
+Star background: Deep Star Maps, NASA/Goddard Space Flight Center
+Scientific Visualization Studio; visualization by Ernie Wright.
+Celestial-coordinate star map, original 1024 x 512 JPEG, unmodified.
+https://svs.gsfc.nasa.gov/3895/
+https://svs.gsfc.nasa.gov/vis/a000000/a003800/a003895/starmap_4k_print.jpg

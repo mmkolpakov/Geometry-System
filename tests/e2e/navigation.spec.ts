@@ -60,7 +60,9 @@ test("brand retains Chinese and clipboard denial exposes a usable link in every 
   }
   await page.locator(".brand").click();
   await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
-  await expect(page.getByRole("heading", {name:"运动中的世界"})).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "太阳系与三颗太阳" }),
+  ).toBeVisible();
 });
 
 test("incorrect answers stay retryable, progress merges across tabs and reset is explicit", async ({
@@ -109,7 +111,7 @@ test("comparison uses one fixed camera and distinguishes retained frames from so
     y: e.getAttribute("cy"),
   }));
   await page
-    .getByRole("checkbox", { name: "Сравнить близкие начальные условия" })
+    .getByRole("checkbox", { name: "Сравнить с небольшим изменением скорости" })
     .check();
   const delta = page.getByRole("slider", {
     name: "Изменение начальной скорости Δvₓ",

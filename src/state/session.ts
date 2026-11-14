@@ -1,5 +1,5 @@
 import { lessons } from "../content/curriculum";
-export type View = "systems" | "journey" | "lab" | "library";
+export type View = "systems" | "story" | "journey" | "lab" | "library";
 export type Lab = "geometry" | "threebody";
 export type Geometry = "flat" | "sphere" | "hyperbolic";
 export type Preset = "figure-eight" | "triangle" | "chaotic";
@@ -9,6 +9,7 @@ export interface Session {
   lab: Lab;
   system: "solar" | "triple";
   systemTime: number;
+  storyChapter: number;
   geometry: Geometry;
   size: number;
   preset: Preset;
@@ -24,6 +25,7 @@ export const defaults: Session = {
   lab: "geometry",
   system: "solar",
   systemTime: 0,
+  storyChapter: 0,
   geometry: "flat",
   size: 0.75,
   preset: "figure-eight",
@@ -45,16 +47,18 @@ export function readSession(search: string): Session {
   const frame = Number(q.get("frame") ?? 0);
   const delta = Number(q.get("dv") ?? 1);
   const systemTime = Number(q.get("time") ?? 0);
+  const storyChapter = Number(q.get("chapter") ?? 0);
   const lessonIndex = Number.isInteger(lesson)
     ? Math.max(0, Math.min(lessons.length - 1, lesson))
     : 0;
   const selected = lessons[lessonIndex];
   const fallbackView = q.has("lesson") ? "journey" : defaults.view;
-  const view = has(q.get("view"), ["systems", "journey", "lab", "library"], fallbackView);
+  const view = has(q.get("view"), ["systems", "story", "journey", "lab", "library"], fallbackView);
   return {
     language: q.get("lang")?.startsWith("zh") ? "zh-CN" : "ru",
     view,
     system: has(q.get("system"), ["solar", "triple"], "solar"),
+    storyChapter: Number.isInteger(storyChapter) ? Math.max(0, Math.min(11, storyChapter)) : 0,
     systemTime: Number.isFinite(systemTime) ? Math.max(0, Math.min(q.get("system") === "triple" ? 40 : 165, systemTime)) : 0,
     // A lesson's instructions and quiz must always use its corresponding laboratory.
     lab:
@@ -93,6 +97,7 @@ export function sessionQuery(s: Session) {
     lab: s.lab,
     system: s.system,
     time: s.systemTime.toFixed(4),
+    chapter: String(s.storyChapter),
     geometry: s.geometry,
     size: s.size.toFixed(2),
     preset: s.preset,
