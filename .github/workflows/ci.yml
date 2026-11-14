@@ -1,35 +1,30 @@
-name: CI
-
+name: Quality gate
 on:
   push:
-    branches: [ main ]
+    branches: [main, 'product/**']
   pull_request:
-    branches: [ main ]
-
+    branches: [main]
+permissions:
+  contents: read
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Run Tests
-      # Assuming Vitest or Jest is set up. 
-      # If not, this step can be commented out until tests are fully configured in package.json
-      run: npm test --if-present
-      
-    - name: Build Project
-      run: npm run build
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: acceptance-report
+          path: |
+            playwright-report/
+            test-results/
+            dist/
+            docs/acceptance/after-*.png
+          retention-days: 14

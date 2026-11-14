@@ -1,0 +1,1174 @@
+[
+  {
+    "locale": "ru",
+    "width": 390,
+    "view": "journey",
+    "lang": "ru",
+    "title": "Контур · Лаборатория возможных миров",
+    "scroll": 390,
+    "fonts": [
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "P",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "hypothesis",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "lab-note",
+        "font": "14px",
+        "line": "22.4px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "Маршрут",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "Лаборатория",
+        "w": 117,
+        "h": 61
+      },
+      {
+        "name": "Основания",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "Поделиться опытом",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "name": "Без формул",
+        "w": 146,
+        "h": 44
+      },
+      {
+        "name": "Плоскость",
+        "w": 160,
+        "h": 44
+      },
+      {
+        "name": "Сфера",
+        "w": 160,
+        "h": 44
+      },
+      {
+        "name": "Гиперболическая",
+        "w": 322,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "ru",
+    "width": 390,
+    "view": "threebody",
+    "lang": "ru",
+    "title": "Контур · Лаборатория возможных миров",
+    "scroll": 390,
+    "fonts": [
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "eyebrow dark",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "P",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "lab-note",
+        "font": "14px",
+        "line": "22.4px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "Маршрут",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "Лаборатория",
+        "w": 117,
+        "h": 61
+      },
+      {
+        "name": "Основания",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "Поделиться опытом",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "name": "Геометрия",
+        "w": 174,
+        "h": 44
+      },
+      {
+        "name": "Три тела",
+        "w": 174,
+        "h": 44
+      },
+      {
+        "name": "Формулы и метод",
+        "w": 166,
+        "h": 44
+      },
+      {
+        "name": "Восьмёрка",
+        "w": 160,
+        "h": 61
+      },
+      {
+        "name": "Треугольник Лагранжа",
+        "w": 160,
+        "h": 61
+      },
+      {
+        "name": "Неустойчивая тройка",
+        "w": 322,
+        "h": 44
+      },
+      {
+        "name": "Запустить",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "Шаг",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "Сброс",
+        "w": 89,
+        "h": 44
+      },
+      {
+        "name": "Сравнить близкие начальные условия",
+        "w": 330,
+        "h": 44
+      },
+      {
+        "name": "Небо неподвижного наблюдателя",
+        "w": 330,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "ru",
+    "width": 390,
+    "view": "library",
+    "lang": "ru",
+    "title": "Контур · Лаборатория возможных миров",
+    "scroll": 390,
+    "fonts": [
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "eyebrow dark",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "P",
+        "font": "12px",
+        "line": "19.2px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "Маршрут",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "Лаборатория",
+        "w": 117,
+        "h": 61
+      },
+      {
+        "name": "Основания",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "Поделиться опытом",
+        "w": 44,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "ru",
+    "width": 1440,
+    "view": "journey",
+    "lang": "ru",
+    "title": "Контур · Лаборатория возможных миров",
+    "scroll": 1440,
+    "fonts": [
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "P",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "hypothesis",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "lab-note",
+        "font": "14px",
+        "line": "22.4px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "Маршрут",
+        "w": 128,
+        "h": 44
+      },
+      {
+        "name": "Лаборатория",
+        "w": 151,
+        "h": 44
+      },
+      {
+        "name": "Основания",
+        "w": 136,
+        "h": 44
+      },
+      {
+        "name": "Поделиться опытом",
+        "w": 191,
+        "h": 44
+      },
+      {
+        "name": "Без формул",
+        "w": 146,
+        "h": 44
+      },
+      {
+        "name": "Плоскость",
+        "w": 102,
+        "h": 44
+      },
+      {
+        "name": "Сфера",
+        "w": 69,
+        "h": 44
+      },
+      {
+        "name": "Гиперболическая",
+        "w": 147,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "ru",
+    "width": 1440,
+    "view": "threebody",
+    "lang": "ru",
+    "title": "Контур · Лаборатория возможных миров",
+    "scroll": 1440,
+    "fonts": [
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "eyebrow dark",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "P",
+        "font": "13px",
+        "line": "20.8px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "lab-note",
+        "font": "14px",
+        "line": "22.4px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "Маршрут",
+        "w": 123,
+        "h": 44
+      },
+      {
+        "name": "Лаборатория",
+        "w": 156,
+        "h": 44
+      },
+      {
+        "name": "Основания",
+        "w": 136,
+        "h": 44
+      },
+      {
+        "name": "Поделиться опытом",
+        "w": 191,
+        "h": 44
+      },
+      {
+        "name": "Геометрия",
+        "w": 99,
+        "h": 44
+      },
+      {
+        "name": "Три тела",
+        "w": 89,
+        "h": 44
+      },
+      {
+        "name": "Формулы и метод",
+        "w": 166,
+        "h": 44
+      },
+      {
+        "name": "Восьмёрка",
+        "w": 106,
+        "h": 44
+      },
+      {
+        "name": "Треугольник Лагранжа",
+        "w": 184,
+        "h": 44
+      },
+      {
+        "name": "Неустойчивая тройка",
+        "w": 175,
+        "h": 44
+      },
+      {
+        "name": "Запустить",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "Шаг",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "Сброс",
+        "w": 89,
+        "h": 44
+      },
+      {
+        "name": "Сравнить близкие начальные условия",
+        "w": 1006,
+        "h": 44
+      },
+      {
+        "name": "Небо неподвижного наблюдателя",
+        "w": 1006,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "ru",
+    "width": 1440,
+    "view": "library",
+    "lang": "ru",
+    "title": "Контур · Лаборатория возможных миров",
+    "scroll": 1440,
+    "fonts": [
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "eyebrow dark",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "P",
+        "font": "13px",
+        "line": "20.8px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "Маршрут",
+        "w": 123,
+        "h": 44
+      },
+      {
+        "name": "Лаборатория",
+        "w": 151,
+        "h": 44
+      },
+      {
+        "name": "Основания",
+        "w": 140,
+        "h": 44
+      },
+      {
+        "name": "Поделиться опытом",
+        "w": 191,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "zh-CN",
+    "width": 390,
+    "view": "journey",
+    "lang": "zh-CN",
+    "title": "界线 · 可能世界实验室",
+    "scroll": 390,
+    "fonts": [
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "P",
+        "font": "14px",
+        "line": "24.5px"
+      },
+      {
+        "selector": "hypothesis",
+        "font": "14px",
+        "line": "24.5px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "lab-note",
+        "font": "14px",
+        "line": "24.5px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "探索路径",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "实验室",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "模型与依据",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "分享实验",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "name": "直观探索",
+        "w": 122,
+        "h": 44
+      },
+      {
+        "name": "平面",
+        "w": 160,
+        "h": 44
+      },
+      {
+        "name": "球面",
+        "w": 160,
+        "h": 44
+      },
+      {
+        "name": "双曲平面",
+        "w": 322,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "zh-CN",
+    "width": 390,
+    "view": "threebody",
+    "lang": "zh-CN",
+    "title": "界线 · 可能世界实验室",
+    "scroll": 390,
+    "fonts": [
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "eyebrow dark",
+        "font": "12px",
+        "line": "21px"
+      },
+      {
+        "selector": "P",
+        "font": "12px",
+        "line": "21px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "lab-note",
+        "font": "14px",
+        "line": "24.5px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "探索路径",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "实验室",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "模型与依据",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "分享实验",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "name": "几何",
+        "w": 174,
+        "h": 44
+      },
+      {
+        "name": "三体运动",
+        "w": 174,
+        "h": 44
+      },
+      {
+        "name": "公式与方法",
+        "w": 114,
+        "h": 44
+      },
+      {
+        "name": "8字轨道",
+        "w": 160,
+        "h": 44
+      },
+      {
+        "name": "拉格朗日三角形",
+        "w": 160,
+        "h": 44
+      },
+      {
+        "name": "不稳定三体",
+        "w": 322,
+        "h": 44
+      },
+      {
+        "name": "开始",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "单步",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "重置",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "比较相近的初始条件",
+        "w": 330,
+        "h": 44
+      },
+      {
+        "name": "固定观测点的天空",
+        "w": 330,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "zh-CN",
+    "width": 390,
+    "view": "library",
+    "lang": "zh-CN",
+    "title": "界线 · 可能世界实验室",
+    "scroll": 390,
+    "fonts": [
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "eyebrow dark",
+        "font": "12px",
+        "line": "21px"
+      },
+      {
+        "selector": "P",
+        "font": "12px",
+        "line": "21px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "探索路径",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "实验室",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "模型与依据",
+        "w": 117,
+        "h": 44
+      },
+      {
+        "name": "分享实验",
+        "w": 44,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "zh-CN",
+    "width": 1440,
+    "view": "journey",
+    "lang": "zh-CN",
+    "title": "界线 · 可能世界实验室",
+    "scroll": 1440,
+    "fonts": [
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "P",
+        "font": "14px",
+        "line": "24.5px"
+      },
+      {
+        "selector": "hypothesis",
+        "font": "14px",
+        "line": "24.5px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "lab-note",
+        "font": "14px",
+        "line": "24.5px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "探索路径",
+        "w": 115,
+        "h": 44
+      },
+      {
+        "name": "实验室",
+        "w": 101,
+        "h": 44
+      },
+      {
+        "name": "模型与依据",
+        "w": 129,
+        "h": 44
+      },
+      {
+        "name": "分享实验",
+        "w": 108,
+        "h": 44
+      },
+      {
+        "name": "直观探索",
+        "w": 122,
+        "h": 44
+      },
+      {
+        "name": "平面",
+        "w": 54,
+        "h": 44
+      },
+      {
+        "name": "球面",
+        "w": 54,
+        "h": 44
+      },
+      {
+        "name": "双曲平面",
+        "w": 82,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "zh-CN",
+    "width": 1440,
+    "view": "threebody",
+    "lang": "zh-CN",
+    "title": "界线 · 可能世界实验室",
+    "scroll": 1440,
+    "fonts": [
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "eyebrow dark",
+        "font": "12px",
+        "line": "21px"
+      },
+      {
+        "selector": "P",
+        "font": "13px",
+        "line": "22.75px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "SPAN",
+        "font": "12px",
+        "line": "19.2px"
+      },
+      {
+        "selector": "lab-note",
+        "font": "14px",
+        "line": "24.5px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "探索路径",
+        "w": 115,
+        "h": 44
+      },
+      {
+        "name": "实验室",
+        "w": 101,
+        "h": 44
+      },
+      {
+        "name": "模型与依据",
+        "w": 129,
+        "h": 44
+      },
+      {
+        "name": "分享实验",
+        "w": 108,
+        "h": 44
+      },
+      {
+        "name": "几何",
+        "w": 54,
+        "h": 44
+      },
+      {
+        "name": "三体运动",
+        "w": 82,
+        "h": 44
+      },
+      {
+        "name": "公式与方法",
+        "w": 114,
+        "h": 44
+      },
+      {
+        "name": "8字轨道",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "拉格朗日三角形",
+        "w": 124,
+        "h": 44
+      },
+      {
+        "name": "不稳定三体",
+        "w": 96,
+        "h": 44
+      },
+      {
+        "name": "开始",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "单步",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "重置",
+        "w": 76,
+        "h": 44
+      },
+      {
+        "name": "比较相近的初始条件",
+        "w": 1006,
+        "h": 44
+      },
+      {
+        "name": "固定观测点的天空",
+        "w": 1006,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "locale": "zh-CN",
+    "width": 1440,
+    "view": "library",
+    "lang": "zh-CN",
+    "title": "界线 · 可能世界实验室",
+    "scroll": 1440,
+    "fonts": [
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "BUTTON",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "nav-active",
+        "font": "14px",
+        "line": "22.4px"
+      },
+      {
+        "selector": "eyebrow dark",
+        "font": "12px",
+        "line": "21px"
+      },
+      {
+        "selector": "P",
+        "font": "13px",
+        "line": "22.75px"
+      }
+    ],
+    "controls": [
+      {
+        "name": "探索路径",
+        "w": 115,
+        "h": 44
+      },
+      {
+        "name": "实验室",
+        "w": 101,
+        "h": 44
+      },
+      {
+        "name": "模型与依据",
+        "w": 129,
+        "h": 44
+      },
+      {
+        "name": "分享实验",
+        "w": 108,
+        "h": 44
+      }
+    ],
+    "errors": []
+  },
+  {
+    "test": "200% root",
+    "locale": "ru",
+    "w": 320,
+    "scroll": 320,
+    "titleWidth": 288,
+    "titleScroll": 288
+  },
+  {
+    "test": "200% root",
+    "locale": "zh-CN",
+    "w": 320,
+    "scroll": 320,
+    "titleWidth": 288,
+    "titleScroll": 288
+  }
+]

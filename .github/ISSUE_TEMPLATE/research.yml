@@ -1,0 +1,42 @@
+name: Исследование
+description: Разрешение конкретной научной, UX или технической неопределённости
+title: "[Research] "
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Вопрос и принимаемое решение
+      description: Что неизвестно и какое продуктовое решение зависит от ответа?
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Метод, источники и границы
+      description: Первичные источники, наблюдение пользователей, измерение или технический эксперимент; что исследование не докажет?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Критерии завершения
+      value: |
+        - [ ] Записаны источники с датами доступа и поддерживаемыми утверждениями.
+        - [ ] Отделены факт, допущение, численная модель и художественный контекст.
+        - [ ] Записаны вывод, оставшиеся вопросы и связанные implementation issues.
+        - [ ] Независимый рецензент проверил вывод.
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Stage
+      options:
+        - Backlog
+        - Ready
+        - Doing
+        - Review
+        - Blocked
+      default: 0
+    validations:
+      required: true

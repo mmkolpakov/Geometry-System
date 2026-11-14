@@ -1,0 +1,60 @@
+name: Пользовательская задача
+description: Проверяемое изменение продукта или учебного сценария
+title: "[Feature] "
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Пользователь и ожидаемый результат
+      description: Кто начинает сценарий, что делает и какой результат должен увидеть?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Границы и зависимости
+      description: Что входит, что не входит, какие исследования или контракты нужны?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Критерии приёмки
+      description: Наблюдаемые критерии; научная, UX, E2E и визуальная проверки по применимости.
+      value: |
+        - [ ] Пользовательский сценарий выполнен.
+        - [ ] Проверены источник чисел и ограничения модели, если затронуты.
+        - [ ] Проверены клавиатура, мобильная компоновка и ошибки.
+        - [ ] Независимый рецензент приложил решение и доказательства.
+    validations:
+      required: true
+  - type: textarea
+    id: estimate
+    attributes:
+      label: Planning poker
+      description: Независимые оценки, их авторы/роли, неопределённости и плановый SP. Агентные оценки помечать явно.
+      value: |
+        Оценки: ещё не проведены.
+        Шкала: 1, 2, 3, 5, 8, 13, 21.
+        План: не выбран.
+        Неопределённости:
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Stage
+      options:
+        - Backlog
+        - Ready
+        - Doing
+        - Review
+        - Blocked
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Доказательства и решение приёмки
+      description: Commit, команды, результаты, свежие скриншоты, независимый рецензент; не отмечать Done без проверки.
