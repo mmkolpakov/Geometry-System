@@ -48,7 +48,7 @@ test('all geometries, intrinsic measurements, keyboard control and research laye
 });
 
 test('journey quiz persists completed progress and advances to the next experiment', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?view=journey');
   await expect(page.getByText('0 из 6: ответы проверены', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Проверить вывод' })).toBeDisabled();
   await page.getByRole('radio', { name: 'По геометрии поверхности сферы.' }).check();
@@ -68,7 +68,7 @@ test('journey quiz persists completed progress and advances to the next experime
 });
 
 test('all route lessons open the matching laboratory and supply answer feedback', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?view=journey');
   const lessonButtons = page.locator('.lesson-list button');
   await expect(lessonButtons).toHaveCount(6);
   for (let index = 0; index < 6; index += 1) {
@@ -82,7 +82,7 @@ test('all route lessons open the matching laboratory and supply answer feedback'
 });
 
 test('returning from free exploration restores the selected lesson laboratory', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?view=journey');
   await page.getByRole('button', { name: 'Лаборатория', exact: true }).click();
   await page.getByRole('button', { name: 'Три тела', exact: true }).click();
   await expect(page.getByTestId('threebody-visual')).toBeVisible();
@@ -126,8 +126,8 @@ test('invalid shared parameters and unavailable storage preserve a usable experi
   await page.addInitScript(() => Object.defineProperty(window, 'localStorage', {
     get() { throw new DOMException('Storage unavailable', 'SecurityError'); },
   }));
-  await page.goto('/?view=unknown&lab=invalid&geometry=wrong&size=Infinity&lesson=-8');
-  await expect(page.getByRole('heading', { name: 'Привычный мир. Непривычные правила.' })).toBeVisible();
+  await page.goto('/?view=journey&lab=invalid&geometry=wrong&size=Infinity&lesson=-8');
+  await expect(page.getByRole('heading', { name: 'Геометрия и движение' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Плоскость', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('slider', { name: 'Размер треугольника' })).toHaveValue('0.75');
   await page.getByRole('radio', { name: 'По геометрии поверхности сферы.' }).check();
@@ -201,10 +201,10 @@ test('three-body playback, step, seek, comparison, presets and reset', async ({ 
 });
 
 test('library navigation gives primary sources and model boundaries', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/?view=journey');
   await page.getByRole('button', { name: 'Основания', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Где заканчивается модель' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Поверхность — не Вселенная' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Модели и источники' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Геометрия поверхности' })).toBeVisible();
   expect(await page.locator('.source-list a').count()).toBeGreaterThanOrEqual(5);
   for (const link of await page.locator('.source-list a').all()) {
     await expect(link).toHaveAttribute('href', /^https:\/\//);
@@ -277,7 +277,7 @@ for (const viewport of [
 ]) {
   test(`layout and keyboard access: ${viewport.name}`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
-    await page.goto('/');
+    await page.goto('/?view=journey');
     await page.keyboard.press('Tab');
     await expect(page.getByRole('link', { name: 'К содержимому' })).toBeFocused();
     await expect(page.getByRole('link', { name: 'К содержимому' })).toBeVisible();
@@ -296,7 +296,7 @@ for (const viewport of [
     await noOverflow(page);
     await page.screenshot({ path: testInfo.outputPath(`${viewport.name}-threebody.png`), fullPage: true });
     await page.getByRole('button', { name: 'Основания', exact: true }).click();
-    await expect(page.getByRole('heading', { name: 'Где заканчивается модель' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Модели и источники' })).toBeVisible();
     await accessible(page);
     await noOverflow(page);
     await page.screenshot({ path: testInfo.outputPath(`${viewport.name}-library.png`), fullPage: true });

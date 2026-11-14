@@ -10,6 +10,14 @@ import {
   sessionQuery,
 } from "./session";
 describe("share state", () => {
+  it("opens the system explorer while preserving old direct lesson links", () => {
+    expect(readSession("")).toMatchObject({view:"systems",system:"solar",systemTime:0});
+    expect(readSession("?lesson=2")).toMatchObject({view:"journey",lesson:2});
+    const state = {...defaults, system:"triple" as const, systemTime:12.3456};
+    expect(readSession("?"+sessionQuery(state))).toEqual(state);
+    expect(readSession("?view=systems&system=triple&time=1000").systemTime).toBe(40);
+  });
+
   it("round trips a reproducible experiment", () =>
     expect(
       readSession(

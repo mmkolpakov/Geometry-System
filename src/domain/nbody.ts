@@ -57,20 +57,26 @@ function solver(bodies: Body[], tolerance: number): Solver {
   validate(bodies);
   finite([tolerance]);
   if (tolerance < 1e-13 || tolerance > 1e-3) throw new Error('Допуск должен быть от 10⁻¹³ до 10⁻³.');
-  return new Solver((_time, y) => {
-    finite(y);
-    const derivative = y.map((_, i) => i % 4 < 2 ? y[i + 2] : 0);
-    for (let i = 0; i < bodies.length; i++) for (let j = i + 1; j < bodies.length; j++) {
-      const dx = y[4 * j] - y[4 * i], dy = y[4 * j + 1] - y[4 * i + 1];
-      const r3 = distance(dx, dy) ** 3;
-      derivative[4 * i + 2] += bodies[j].mass * dx / r3;
-      derivative[4 * i + 3] += bodies[j].mass * dy / r3;
-      derivative[4 * j + 2] -= bodies[i].mass * dx / r3;
-      derivative[4 * j + 3] -= bodies[i].mass * dy / r3;
-    }
-    finite(derivative);
-    return derivative;
-  }, bodies.length * 4, { absoluteTolerance: tolerance, relativeTolerance: tolerance, maxStepSize: MAX_TIME_STEP, maxSteps: 100_000 });
+  const masses = bodies.map(body => body.mass);
+  return new Solver((_time, y) => gravityDerivative(masses, y), bodies.length * 4,
+    { absoluteTolerance: tolerance, relativeTolerance: tolerance, maxStepSize: MAX_TIME_STEP, maxSteps: 100_000 });
+}
+
+/** State order x,y,vx,vy; a zero source mass is a passive test particle. G = 1. */
+export function gravityDerivative(masses: readonly number[], y: number[]): number[] {
+  if (y.length !== masses.length * 4 || masses.some(mass => mass < 0)) throw new Error('Некорректное состояние системы.');
+  finite([...y, ...masses]);
+  const derivative = y.map((_, i) => i % 4 < 2 ? y[i + 2] : 0);
+  for (let i = 0; i < masses.length; i++) for (let j = i + 1; j < masses.length; j++) {
+    const dx = y[4 * j] - y[4 * i], dy = y[4 * j + 1] - y[4 * i + 1];
+    const r3 = distance(dx, dy) ** 3;
+    derivative[4 * i + 2] += masses[j] * dx / r3;
+    derivative[4 * i + 3] += masses[j] * dy / r3;
+    derivative[4 * j + 2] -= masses[i] * dx / r3;
+    derivative[4 * j + 3] -= masses[i] * dy / r3;
+  }
+  finite(derivative);
+  return derivative;
 }
 
 /** Advance by dt using ODEX, not a single internal integration step. Input stays unchanged. */

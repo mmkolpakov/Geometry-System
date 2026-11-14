@@ -58,7 +58,7 @@ for (const viewport of [
       path: testInfo.outputPath(`zh-${viewport.width}-library.png`),
       fullPage: true,
     });
-    await page.goto("/?lang=zh-CN");
+    await page.goto("/?lang=zh-CN&view=journey");
     await page.screenshot({
       path: testInfo.outputPath(`zh-${viewport.width}-journey.png`),
       fullPage: true,
@@ -69,7 +69,7 @@ test("44px targets and text-spacing survive compact layout", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/?view=journey");
   for (const el of await page
     .locator(
       ".topbar button,.topbar select,.segmented button,.level-button,input[type=range],.primary-button",

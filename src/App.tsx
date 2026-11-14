@@ -1,5 +1,5 @@
 import { LocaleProvider, useLocale } from "./i18n";
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowLeft,
@@ -34,6 +34,8 @@ import {
   sessionQuery,
   type Session,
 } from "./state/session";
+
+const SystemScene = lazy(() => import("./features/SystemScene").then(module => ({ default: module.SystemScene })));
 
 export default function App() {
   const [session, setSession] = useState(() => readSession(location.search));
@@ -246,14 +248,13 @@ function AppContent({
           </span>
           <span>
             {t("контур")}
-            <span className="brand-caption">
-              {t("ЛАБОРАТОРИЯ ВОЗМОЖНЫХ МИРОВ")}
-            </span>
+
           </span>
         </a>
         <nav aria-label={t("Основная навигация")}>
           {(
             [
+              { id: "systems", name: t("Системы"), icon: Orbit },
               { id: "journey", name: t("Маршрут"), icon: Compass },
               { id: "lab", name: t("Лаборатория"), icon: FlaskConical },
               { id: "library", name: t("Основания"), icon: BookOpen },
@@ -313,18 +314,26 @@ function AppContent({
         </section>
       )}
       <main id="main">
+        {session.view === "systems" && (
+          <section className="systems-page">
+            <div className="system-page-heading">
+              <h1 ref={pageHeading} tabIndex={-1}>{t("Миры в движении")}</h1>
+              <p>{t("От Солнечной системы к трём солнцам. Выберите мир, поверните его и проследите путь планеты.")}</p>
+            </div>
+            <Suspense fallback={<p role="status">{t("Загружаем сцену…")}</p>}>
+              <SystemScene key={`system-${storyEpoch}-${session.language}`} system={session.system} onSystemChange={system => update({ system, systemTime: 0 })} time={session.systemTime} onTimeChange={systemTime => update({ systemTime })} />
+            </Suspense>
+            <div className="system-learning-link">
+              <span>{t("Почему меняются орбиты и геометрия?")}</span>
+              <button className="text-button" onClick={() => openLesson(0)}>{t("К шести опытам")} <ArrowRight size={16} /></button>
+            </div>
+          </section>
+        )}
         {session.view === "journey" && (
           <>
             <section className="hero">
               <div className="hero-copy">
-                <p className="eyebrow">
-                  <span /> {t("НАУКА ПО ТУ СТОРОНУ СЮЖЕТА")}
-                </p>
-                <h1>
-                  {t("Привычный мир.")}
-                  <br />
-                  <em>{t("Непривычные правила.")}</em>
-                </h1>
+                <h1>{t("Геометрия и движение")}</h1>
                 <p className="hero-description">
                   {t(
                     "Может ли треугольник иметь три прямых угла? Почему три солнца так трудно предсказать? Проверьте сами — в опытах по мотивам трилогии «Задача трёх тел».",
@@ -423,8 +432,7 @@ function AppContent({
             </section>
             <div className="section-heading">
               <div>
-                <p className="eyebrow dark">{t("ИССЛЕДОВАТЕЛЬСКИЙ МАРШРУТ")}</p>
-                <h2>{t("От вопроса — к собственному открытию")}</h2>
+                <h2>{t("Шесть опытов")}</h2>
               </div>
               <span className="progress-label">
                 <CheckCircle2 size={16} />
@@ -475,7 +483,6 @@ function AppContent({
             <section className="journey-layout" id="experiment">
               <aside className="journey-sidebar">
                 <p className="sidebar-label">{t("ВАШИ ЭКСПЕРИМЕНТЫ")}</p>
-                <p className="control-hint">{t("Наука без сюжета")}</p>
                 <ol className="lesson-list">
                   {lessons.map((l, index) => (
                     <li key={l.id}>
@@ -668,9 +675,7 @@ function AppContent({
               <h1 ref={pageHeading} tabIndex={-1}>
                 {t("Лаборатория")}
               </h1>
-              <p>
-                {t("Один параметр. Одно изменение. Наблюдаемый результат.")}
-              </p>
+
             </div>
             <div className="standalone-toolbar">
               <div className="segmented" aria-label={t("Лаборатория")}>
@@ -719,18 +724,18 @@ function AppContent({
             <div className="page-heading">
               <p className="eyebrow dark">{t("ПРОВЕРЯЕМЫЕ ОСНОВАНИЯ")}</p>
               <h1 ref={pageHeading} tabIndex={-1}>
-                {t("Где заканчивается модель")}
+                {t("Модели и источники")}
               </h1>
               <p>
                 {t(
-                  "Вопросы взяты из художественного мира. Ответы нужно проверять за его пределами.",
+                  "Уравнения, допущения и материалы для самостоятельного изучения.",
                 )}
               </p>
             </div>
             <div className="principle-grid">
               <article>
                 <span>{t("01 / ГЕОМЕТРИЯ")}</span>
-                <h2>{t("Поверхность — не Вселенная")}</h2>
+                <h2>{t("Геометрия поверхности")}</h2>
                 <p>
                   {t(
                     "Сфера и диск Пуанкаре описывают двумерные геометрии постоянной кривизны. Мы измеряем внутренние углы и длины. Это не модель пространства-времени и не реализация метрики FLRW.",
@@ -739,7 +744,7 @@ function AppContent({
               </article>
               <article>
                 <span>{t("02 / ДИНАМИКА")}</span>
-                <h2>{t("Расчёт — не пророчество")}</h2>
+                <h2>{t("Движение тел")}</h2>
                 <p>
                   {t(
                     "Точечные массы, ньютоновская гравитация и безразмерные единицы. Библиотека ODEX подбирает шаг по заданной точности. При тесном сближении или большой ошибке расчёт останавливается.",
@@ -748,7 +753,7 @@ function AppContent({
               </article>
               <article>
                 <span>{t("03 / ХУДОЖЕСТВЕННЫЙ МИР")}</span>
-                <h2>{t("Метафора — не доказательство")}</h2>
+                <h2>{t("Связь с книгами")}</h2>
                 <p>
                   {t(
                     "Задача трёх тел и геометрия изучаются как самостоятельные научные модели. Литературные пояснения доступны отдельно по вашему выбору.",
@@ -783,10 +788,10 @@ function AppContent({
             <div className="method-note">
               <BookOpen size={22} />
               <div>
-                <h3>{t("Открытый метод")}</h3>
+                <h3>{t("Код и формулы")}</h3>
                 <p>
                   {t(
-                    "Исходники, тесты математических моделей и исследовательские заметки доступны в репозитории. Для воспроизведения опыта достаточно ссылки: она сохраняет выбранную модель и параметры, но не личный прогресс.",
+                    "Код, тесты и описание моделей доступны в репозитории. Ссылка на опыт сохраняет модель и параметры.",
                   )}
                 </p>
                 <a
@@ -808,7 +813,7 @@ function AppContent({
         </span>
         <span>
           {t(
-            "Независимая образовательная лаборатория · по мотивам трилогии Лю Цысиня",
+            "Геометрия и орбиты · Лю Цысинь",
           )}
         </span>
         <a

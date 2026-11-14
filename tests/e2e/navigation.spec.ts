@@ -5,7 +5,7 @@ test("lesson changes focus the new heading and browser Back restores the prior l
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
+  await page.goto("/?view=journey");
   const before = await page.evaluate(() => history.length);
   await page
     .getByRole("button", { name: "Следующий опыт", exact: true })
@@ -42,7 +42,7 @@ test("brand retains Chinese and clipboard denial exposes a usable link in every 
       },
     }),
   );
-  for (const view of ["journey", "lab", "library"]) {
+  for (const view of ["systems", "journey", "lab", "library"]) {
     await page.goto(`/?lang=zh-CN&view=${view}`);
     await page.getByRole("button", { name: "分享实验", exact: true }).click();
     await expect(page.locator(".share-fallback [role=status]")).toContainText(
@@ -60,17 +60,14 @@ test("brand retains Chinese and clipboard denial exposes a usable link in every 
   }
   await page.locator(".brand").click();
   await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
-  await expect(page.locator(".lesson-list button").first()).toHaveAttribute(
-    "aria-current",
-    "step",
-  );
+  await expect(page.getByRole("heading", {name:"运动中的世界"})).toBeVisible();
 });
 
 test("incorrect answers stay retryable, progress merges across tabs and reset is explicit", async ({
   page,
   context,
 }) => {
-  await page.goto("/");
+  await page.goto("/?view=journey");
   await page.evaluate(() => localStorage.clear());
   await page.reload();
   const other = await context.newPage();
