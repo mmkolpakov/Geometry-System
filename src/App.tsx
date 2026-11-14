@@ -43,6 +43,22 @@ export default function App() {
     </LocaleProvider>
   );
 }
+/** Only mounted, in-memory consent opens narrative details; URLs never carry it. */
+function StoryDisclosure({ children }: { children: React.ReactNode }) {
+  const { t } = useLocale();
+  const [revealed, setRevealed] = useState(false);
+  return (
+    <section className="formula-card story-disclosure" aria-label={t("Литературный контекст и источники")}>
+      <h3>{t("Связь с книгой — по желанию")}</h3>
+      <p>{t("Сюжетные подробности и ссылки могут раскрыть события трилогии. Научный опыт и вопросы доступны без них.")}</p>
+      <button type="button" className="text-button" aria-expanded={revealed} onClick={() => setRevealed(value => !value)}>
+        {revealed ? t("Скрыть сюжетный контекст") : t("Показать сюжетный контекст")}
+      </button>
+      {revealed && <div data-testid="story-content">{children}</div>}
+    </section>
+  );
+}
+
 function AppContent({
   session,
   setSession,
@@ -60,6 +76,7 @@ function AppContent({
   const [shareFallback, setShareFallback] = useState(false);
   const [resetPrompt, setResetPrompt] = useState(false);
   const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
+  const [storyEpoch, setStoryEpoch] = useState(0);
   const lessonHeading = useRef<HTMLHeadingElement>(null);
   const pageHeading = useRef<HTMLHeadingElement>(null);
   const focusNext = useRef(false);
@@ -73,6 +90,7 @@ function AppContent({
     if (patch.view !== undefined || patch.lesson !== undefined) {
       pushNavigation.current = true;
       focusNext.current = true;
+      setStoryEpoch(value => value + 1);
     }
     setSession((previous) => ({ ...previous, ...patch }));
   };
@@ -95,6 +113,7 @@ function AppContent({
   useEffect(() => {
     const listener = () => {
       focusNext.current = true;
+      setStoryEpoch(value => value + 1);
       setSession(readSession(location.search));
     };
     const progressListener = (event: StorageEvent) => {
@@ -456,6 +475,7 @@ function AppContent({
             <section className="journey-layout" id="experiment">
               <aside className="journey-sidebar">
                 <p className="sidebar-label">{t("ВАШИ ЭКСПЕРИМЕНТЫ")}</p>
+                <p className="control-hint">{t("Наука без сюжета")}</p>
                 <ol className="lesson-list">
                   {lessons.map((l, index) => (
                     <li key={l.id}>
@@ -508,7 +528,9 @@ function AppContent({
                   <h2 ref={lessonHeading} tabIndex={-1}>
                     {current.question}
                   </h2>
-                  <p>{current.context}</p>
+                  <p>{current.scienceContext}</p>
+                  <StoryDisclosure key={`story-${storyEpoch}-${session.lesson}-${session.view}-${locale}`}>
+                    <p>{current.context}</p>
                   {current.source && (
                     <a
                       className="context-source"
@@ -520,6 +542,7 @@ function AppContent({
                       <ExternalLink size={12} />
                     </a>
                   )}
+                  </StoryDisclosure>
                   {current.hypothesis && (
                     <p className="hypothesis">
                       <strong>{t("Перед опытом:")}</strong> {current.hypothesis}
@@ -728,7 +751,7 @@ function AppContent({
                 <h2>{t("Метафора — не доказательство")}</h2>
                 <p>
                   {t(
-                    "Три солнца дают повод изучить динамику. Сюжеты о размерностях — геометрию. Опыты не воспроизводят технологии, цивилизации или космологию трилогии.",
+                    "Задача трёх тел и геометрия изучаются как самостоятельные научные модели. Литературные пояснения доступны отдельно по вашему выбору.",
                   )}
                 </p>
               </article>
@@ -737,7 +760,7 @@ function AppContent({
               {t("Источники и дальнейшее чтение")}
             </h2>
             <div className="source-list">
-              {sources.map((s, i) => (
+              {sources.filter(s => !s.literary).map((s, i) => (
                 <a key={s.url} href={s.url} target="_blank" rel="noreferrer">
                   <span className="source-number">0{i + 1}</span>
                   <span>
@@ -749,6 +772,14 @@ function AppContent({
                 </a>
               ))}
             </div>
+            <StoryDisclosure key={`library-story-${storyEpoch}-${locale}`}>
+              {sources.filter(s => s.literary).map(source => (
+                <p key={source.url}>
+                  <a href={source.url} target="_blank" rel="noreferrer">{source.title} ↗</a>
+                  <br />{source.note}
+                </p>
+              ))}
+            </StoryDisclosure>
             <div className="method-note">
               <BookOpen size={22} />
               <div>

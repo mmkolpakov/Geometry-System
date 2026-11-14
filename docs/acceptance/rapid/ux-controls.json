@@ -1,0 +1,56 @@
+[
+  {
+    "lang": "ru",
+    "completed": "1 из 6: ответы проверены",
+    "reloaded": "1 из 6: ответы проверены",
+    "prompt": "Удалить отметки о проверенных ответах в этом браузере?\n\nУдалить отметкиОтмена",
+    "cancelFocus": true,
+    "cancelled": "1 из 6: ответы проверены",
+    "next": {
+      "title": "Может ли треугольник иметь три угла по 90°?",
+      "focus": true,
+      "bounds": {
+        "x": 36,
+        "y": 113.796875,
+        "width": 318,
+        "height": 59.03125
+      }
+    },
+    "sharedUrl": "http://127.0.0.1:4173/?v=1&lang=ru&view=journey&lab=geometry&geometry=sphere&size=0.27&preset=figure-eight&level=explore&lesson=1&compare=0&dv=1&frame=0",
+    "fallback": "http://127.0.0.1:4173/?v=1&lang=ru&view=journey&lab=geometry&geometry=sphere&size=0.27&preset=figure-eight&level=explore&lesson=1&compare=0&dv=1&frame=0",
+    "selected": true,
+    "restored": true,
+    "previous": {
+      "title": "Почему кратчайший путь может выглядеть дугой?",
+      "url": "http://127.0.0.1:4173/?v=1&lang=ru&view=journey&lab=geometry&geometry=flat&size=0.75&preset=figure-eight&level=explore&lesson=0&compare=0&dv=1&frame=0"
+    },
+    "brandLang": "ru"
+  },
+  {
+    "lang": "zh-CN",
+    "completed": "已核对 1 / 6",
+    "reloaded": "已核对 1 / 6",
+    "prompt": "删除此浏览器中已核对答案的记录吗？\n\n删除记录取消",
+    "cancelFocus": true,
+    "cancelled": "已核对 1 / 6",
+    "next": {
+      "title": "一个三角形能有三个90°的内角吗？",
+      "focus": true,
+      "bounds": {
+        "x": 36,
+        "y": 114.265625,
+        "width": 318,
+        "height": 59.03125
+      }
+    },
+    "sharedUrl": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=journey&lab=geometry&geometry=sphere&size=0.27&preset=figure-eight&level=explore&lesson=1&compare=0&dv=1&frame=0",
+    "fallback": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=journey&lab=geometry&geometry=sphere&size=0.27&preset=figure-eight&level=explore&lesson=1&compare=0&dv=1&frame=0",
+    "selected": true,
+    "restored": true,
+    "previous": {
+      "title": "最短的路，为什么在图上是弯的？",
+      "url": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=journey&lab=geometry&geometry=flat&size=0.75&preset=figure-eight&level=explore&lesson=0&compare=0&dv=1&frame=0"
+    },
+    "brandLang": "zh-CN"
+  }
+]

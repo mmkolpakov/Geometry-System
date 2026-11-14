@@ -4,9 +4,10 @@ import type { Lesson } from './curriculum';
 export const lessonsZh: Lesson[] = [
   {
     id: 'straight-path',
+    scienceContext: '平面和球面都是二维的，但距离的测量规则不同。比较最短路径，检验三角形的内角和是否随大小改变。',
     number: '01',
     title: '什么才算直路',
-    book: '《死神永生》· 基础实验',
+    book: '《死神永生》',
     question: '最短的路，为什么在图上是弯的？',
     context: '刘慈欣谈到《死神永生》的构思时，把维数称为一个基本的数学概念。先不谈情节，来看一个容易混淆的区别：平面和球面都是二维的，测量距离的规则却不同。',
     hypothesis: '把平面上的三角形放大，内角和会改变吗？',
@@ -25,9 +26,10 @@ export const lessonsZh: Lesson[] = [
   },
   {
     id: 'right-angles',
+    scienceContext: '曲率与维数是不同的性质。球面始终是二维曲面；用它检验在平面上熟悉的三角形内角和规则。',
     number: '02',
     title: '三个直角的三角形',
-    book: '《死神永生》· 基础实验',
+    book: '《死神永生》',
     question: '一个三角形能有三个90°的内角吗？',
     context: '谈论《死神永生》中的空间之前，先区分维数与曲率。球面是弯曲的，却仍是二维曲面。本实验用它检验内角和的规则，并不重现书中的场景。',
     hypothesis: '球面三角形的内角和能达到270°吗？',
@@ -46,16 +48,17 @@ export const lessonsZh: Lesson[] = [
   },
   {
     id: 'boundary',
+    scienceContext: '庞加莱圆盘把无限的双曲平面画在有限的圆内。比较它与平面的度量，再单独观察三维点的投影会丢失哪些信息。',
     number: '03',
     title: '图的边界，不是世界的尽头',
-    book: '《死神永生》· 含剧透',
+    book: '《死神永生》',
     question: '无限的空间，能画在一个圆里吗？',
     context: '本节涉及《死神永生》的情节：太阳系失去一个空间维度。这是小说的设定，不等于曲率变成负值。庞加莱圆盘让我们看清另一件事：一张平面图，可以表示距离规则不同的空间。',
     hypothesis: '三角形越来越靠近圆盘边缘时，内角和会怎样变化？',
     source: { title: '刘慈欣谈空间维度 · 英文访谈', url: 'https://u.osu.edu/mclc/2015/10/19/liu-cixin-interview/' },
     experiment: '在双曲平面上放大三角形，比较它与平面三角形的内角和。再到“维数与投影”中，把物体从0°转到90°，观察原本重合的两个点如何分开。',
     observe: '圆盘中的三角形内角和小于180°，圆周不属于这个空间。在投影实验里，两点在三维空间中的距离始终是2，图上的距离却会改变。改变度量与在投影中丢失深度，是两件不同的事。',
-    limit: '圆盘表示双曲平面；旋转只是改变同一组三维点的观看方向。这两个实验都不模拟真实空间的降维，也不模拟书中的武器。',
+    limit: '圆盘表示双曲平面；旋转只是改变同一组三维点的观看方向。改变度量与在投影中丢失坐标是不同的数学操作；这里不模拟空间的物理变化。',
     lab: 'geometry',
     geometry: 'hyperbolic',
     quiz: {
@@ -67,6 +70,7 @@ export const lessonsZh: Lesson[] = [
   },
   {
     id: 'three-suns',
+    scienceContext: '三个互相吸引的质点可以有特殊的有序运动。观察拉格朗日解，再比较三角形的形状与固定观测点处的方向、归一化辐照度。',
     number: '04',
     title: '三个太阳，同一个定律',
     book: '《三体》',
@@ -88,6 +92,7 @@ export const lessonsZh: Lesson[] = [
   },
   {
     id: 'figure-eight',
+    scienceContext: '三个等质量质点存在特殊的“8”字周期解。用数值计算研究它，并区分精确解的性质与计算误差。',
     number: '05',
     title: '绕成“8”字的例外',
     book: '《三体》',
@@ -109,6 +114,7 @@ export const lessonsZh: Lesson[] = [
   },
   {
     id: 'prediction',
+    scienceContext: '在运动规律已知时，轨道仍取决于初始状态。比较两组非常接近的初速度，把轨道差异与数值误差分开。',
     number: '06',
     title: '预测的边界',
     book: '《黑暗森林》',

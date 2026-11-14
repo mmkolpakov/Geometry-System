@@ -30,6 +30,7 @@ export const sources = [
     note: "Открытый пакет для профессиональных расчётов. В этой лаборатории используется ODEX с проверками инвариантов.",
   },
   {
+    literary: true,
     title: "Роман «Три тела»",
     organization: "Tor / Macmillan",
     url: "https://us.macmillan.com/books/9780765382030/thethreebodyproblem/",

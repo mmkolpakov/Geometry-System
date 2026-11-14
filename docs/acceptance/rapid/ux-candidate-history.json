@@ -1,0 +1,18 @@
+[
+  {
+    "lang": "ru",
+    "sameBack": {
+      "url": "http://127.0.0.1:4173/?v=1&lang=ru&view=journey&lab=geometry&geometry=hyperbolic&size=0.75&preset=figure-eight&level=explore&lesson=2&compare=0&dv=1&frame=0",
+      "expanded": "false"
+    },
+    "localeClosed": "false"
+  },
+  {
+    "lang": "zh-CN",
+    "sameBack": {
+      "url": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=journey&lab=geometry&geometry=hyperbolic&size=0.75&preset=figure-eight&level=explore&lesson=2&compare=0&dv=1&frame=0",
+      "expanded": "false"
+    },
+    "localeClosed": "false"
+  }
+]

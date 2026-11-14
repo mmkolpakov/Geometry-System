@@ -1,0 +1,70 @@
+[
+  {
+    "width": 1440,
+    "base": {
+      "url": "http://127.0.0.1:4173/?lang=ru&lesson=3&preset=triangle&frame=137&compare=1&dv=7&level=research",
+      "time": "4,93",
+      "title": "Обязательно ли три притягивающихся тела движутся беспорядочно?"
+    },
+    "switches": [
+      {
+        "lang": "zh-CN",
+        "url": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=journey&lab=threebody&geometry=flat&size=0.75&preset=triangle&level=research&lesson=3&compare=1&dv=7&frame=137",
+        "time": "4.93",
+        "title": "三个互相吸引的物体，一定会无规则地运动吗？",
+        "nav": "探索路径\n实验室\n模型与依据"
+      },
+      {
+        "lang": "ru",
+        "url": "http://127.0.0.1:4173/?v=1&lang=ru&view=journey&lab=threebody&geometry=flat&size=0.75&preset=triangle&level=research&lesson=3&compare=1&dv=7&frame=137",
+        "time": "4,93",
+        "title": "Обязательно ли три притягивающихся тела движутся беспорядочно?",
+        "nav": "Маршрут\nЛаборатория\nОснования"
+      },
+      {
+        "lang": "zh-CN",
+        "url": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=journey&lab=threebody&geometry=flat&size=0.75&preset=triangle&level=research&lesson=3&compare=1&dv=7&frame=137",
+        "time": "4.93",
+        "title": "三个互相吸引的物体，一定会无规则地运动吗？",
+        "nav": "探索路径\n实验室\n模型与依据"
+      }
+    ],
+    "focus": true,
+    "directSafe": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "base": {
+      "url": "http://127.0.0.1:4173/?lang=ru&lesson=3&preset=triangle&frame=137&compare=1&dv=7&level=research",
+      "time": "4,93",
+      "title": "Обязательно ли три притягивающихся тела движутся беспорядочно?"
+    },
+    "switches": [
+      {
+        "lang": "zh-CN",
+        "url": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=journey&lab=threebody&geometry=flat&size=0.75&preset=triangle&level=research&lesson=3&compare=1&dv=7&frame=137",
+        "time": "4.93",
+        "title": "三个互相吸引的物体，一定会无规则地运动吗？",
+        "nav": "探索路径\n实验室\n模型与依据"
+      },
+      {
+        "lang": "ru",
+        "url": "http://127.0.0.1:4173/?v=1&lang=ru&view=journey&lab=threebody&geometry=flat&size=0.75&preset=triangle&level=research&lesson=3&compare=1&dv=7&frame=137",
+        "time": "4,93",
+        "title": "Обязательно ли три притягивающихся тела движутся беспорядочно?",
+        "nav": "Маршрут\nЛаборатория\nОснования"
+      },
+      {
+        "lang": "zh-CN",
+        "url": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=journey&lab=threebody&geometry=flat&size=0.75&preset=triangle&level=research&lesson=3&compare=1&dv=7&frame=137",
+        "time": "4.93",
+        "title": "三个互相吸引的物体，一定会无规则地运动吗？",
+        "nav": "探索路径\n实验室\n模型与依据"
+      }
+    ],
+    "focus": true,
+    "directSafe": true,
+    "errors": []
+  }
+]

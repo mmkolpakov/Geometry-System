@@ -45,3 +45,5 @@ npm run test:e2e
 Дизайн-система и локализация: [источники решений](docs/research/design-system.md), [китайская адаптация](docs/research/localization.md), [независимая визуальная проверка](docs/acceptance/design-localization.md).
 
 Приёмка с людьми: [роли, ожидания и сценарии](docs/research/acceptance-personas.md) · [популярность книг и экранизаций](docs/research/audience-popularity.md) · [бланк наблюдения](docs/acceptance/audience-pilot.md). Ожидания пока остаются гипотезами; пилот не проведён.
+
+Согласование выпуска: [RAPID](docs/acceptance/rapid-decision.md) · [код и стоимость сопровождения](docs/research/maintenance-cost.md) · [политика спойлеров](docs/research/spoiler-policy.md).

@@ -25,4 +25,4 @@ dist-ssr
 
 # Browser verification output
 playwright-report/
-test-results/
+test-results*/

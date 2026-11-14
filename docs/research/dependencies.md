@@ -31,4 +31,6 @@ Before substitution, `src/domain/nbody.ts` contained 263 lines, including a cust
 | [Source Academy nbody](https://source-academy.github.io/nbody/api/) 0.2.0 | Browser JS/TS N-body library; installation couples Three.js, Plotly and teaching controls. | More rendering/UI dependency surface than needed for an SVG experiment; prefer a narrow ODE engine. |
 | [@tangent.to/ode](https://github.com/tangent-to/ode) | Browser ESM RK45, dense output, events and stiff solvers; tests compare with SciPy. | Promising, but a younger library with less release history. ODEX is the smaller scoped replacement for the current requirements. |
 
+The release maintenance review removed the unused react-i18next provider and plugin: components already use a single local context and i18next fixed translators. i18next remains the maintained translation engine. See [layer inventory and trade-offs](maintenance-cost.md).
+
 All external assets needed at runtime are bundled. Deployment does not depend on scientific SaaS, API keys, live CDNs, the GitHub API or a notebook server. Notices for incorporated dependencies are included in the production build.

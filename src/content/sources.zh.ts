@@ -30,6 +30,7 @@ export const sourcesZh = [
     note: '用于研究的开源N体模拟软件。本实验使用ODEX求解器，并检查守恒量；并未在浏览器中运行REBOUND。',
   },
   {
+    literary: true,
     title: '小说《三体》（英文版）',
     organization: 'Tor / Macmillan',
     url: 'https://us.macmillan.com/books/9780765382030/thethreebodyproblem/',

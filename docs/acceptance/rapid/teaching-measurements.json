@@ -1,0 +1,192 @@
+{
+  "checkedAt": "2026-11-14T22:39:36.020Z",
+  "base": "http://127.0.0.1:4173",
+  "runtime": "156.0.8078.79",
+  "checks": [
+    {
+      "id": "T05-context",
+      "story": "在游戏中，周文王根据飞星等现象，尝试预测恒纪元与乱纪元。这里把问题缩小：三个质量相等的质点能否有序运动？从一个固定位置看，它们的方向又会怎样变化？本实验没有行星或气候模型。\n\n《三体》“周文王与长夜”节选 · Tor / Reactor，英文",
+      "source": "https://reactormag.com/the-three-body-problem-excerpt-king-wen-of-zhou-and-the-long-night-cixin-liu/"
+    },
+    {
+      "id": "T05-comparison",
+      "story": "《黑暗森林》的面壁计划利用了一个限制：智子无法读取人的思想。这里借用“不完全知道状态”这个问题作类比：引力定律不变，只把初速度改一点。力学模型不解释人或文明的决策。\n\n《黑暗森林》· Macmillan简介与英文节选",
+      "parameters": {
+        "v": "1",
+        "lang": "zh-CN",
+        "view": "journey",
+        "lab": "threebody",
+        "geometry": "flat",
+        "size": "0.75",
+        "preset": "chaotic",
+        "level": "explore",
+        "lesson": "5",
+        "compare": "1",
+        "dv": "10",
+        "frame": "120"
+      },
+      "time": "4.32",
+      "delta": "1.00e-3",
+      "note": "均方根位置差： 0.00352 个长度单位。可见的差异本身并不能证明混沌。",
+      "svgDescription": "时间为4.32个模型单位。彩色实线表示编号1至3的物体已经走过的路径。浅色线表示预先计算的完整实验轨迹。虚线表示改变初速度后的对照结果。均方根位置差：0.00352。图下方提供坐标和能量的数值。"
+    },
+    {
+      "id": "C03-language",
+      "ruTime": "4,32",
+      "zhTime": "4.32",
+      "ruEnergy": "Основная\t-1,00690\t-1,00690\t6,54e-8%",
+      "zhEnergy": "基准\t-1.00690\t-1.00690\t6.54e-8%",
+      "ruComparison": "Сравнение\t-1,00692\t-1,00692\t5,44e-7%",
+      "zhComparison": "对照\t-1.00692\t-1.00692\t5.44e-7%",
+      "ruParameters": {
+        "v": "1",
+        "lang": "ru",
+        "view": "journey",
+        "lab": "threebody",
+        "geometry": "flat",
+        "size": "0.75",
+        "preset": "chaotic",
+        "level": "explore",
+        "lesson": "5",
+        "compare": "1",
+        "dv": "10",
+        "frame": "120"
+      }
+    },
+    {
+      "id": "T06-shared-nbody",
+      "url": "http://127.0.0.1:4173/?v=1&lang=ru&view=journey&lab=threebody&geometry=flat&size=0.75&preset=chaotic&level=explore&lesson=5&compare=1&dv=10&frame=120",
+      "recipientUrl": "http://127.0.0.1:4173/?v=1&lang=ru&view=journey&lab=threebody&geometry=flat&size=0.75&preset=chaotic&level=explore&lesson=5&compare=1&dv=10&frame=120",
+      "recipientTime": "4,32",
+      "matchingCoordinates": [
+        [
+          "287.5186596719408",
+          "246.3899616718836"
+        ],
+        [
+          "275.4897277121167",
+          "233.63978672970836"
+        ],
+        [
+          "336.99161261594236",
+          "185.97025159840803"
+        ],
+        [
+          "287.6467004394315",
+          "246.36038967726077"
+        ],
+        [
+          "275.41524385033216",
+          "233.66427619349588"
+        ],
+        [
+          "336.9380557102365",
+          "185.97533412924275"
+        ]
+      ],
+      "storyHidden": true
+    },
+    {
+      "id": "T06-controls",
+      "pausedFrame": 124,
+      "pausedTime": "4,46",
+      "steppedFrame": 125,
+      "resetFrame": 0,
+      "backRestored": true,
+      "status": "На паузе"
+    },
+    {
+      "id": "T06-shared-geometry",
+      "url": "http://127.0.0.1:4173/?v=1&lang=ru&view=lab&lab=geometry&geometry=sphere&size=0.65&preset=figure-eight&level=research&lesson=0&compare=0&dv=1&frame=0",
+      "size": "0.65",
+      "sameNumericalPanel": true,
+      "personalProgressTransferred": false
+    },
+    {
+      "id": "C03-geometry",
+      "parameters": {
+        "v": "1",
+        "lang": "zh-CN",
+        "view": "lab",
+        "lab": "geometry",
+        "geometry": "sphere",
+        "size": "0.65",
+        "preset": "figure-eight",
+        "level": "research",
+        "lesson": "0",
+        "compare": "0",
+        "dv": "1",
+        "frame": "0"
+      },
+      "body": "平面\n球面\n双曲平面\nK > 0\nα · 70.7°\nβ · 70.7°\nγ · 70.7°\n测地线\nR = 1 · 球面投影\n三角形大小\n65%\n\n曲率保持不变，只改变图形大小。\n\n内角和\n212.2°\n相对于平面：+32.2°\n每个内角\n70.7°\nα = β = γ · 对称三角形\n面积\n0.562\n以R²为单位\n球面的内角和更大\n\n三角形越大，内角和超出180°的部分越明显。最大尺寸时，三个角都是直角：90° + 90° + 90° = 270°。\n\n这是球面的正投影。数值表示球面上的角度；它们在平面屏幕上的外观可能不同。\n\n在曲面上测量\n\nα + β + γ − π = K · A\n\n这是常曲率曲面上测地三角形的高斯—博内公式。角度以弧度表示，A是曲面上的面积。\n\nds² = R²(dθ² + sin²θ dφ²)，K = 1/R²。三角形的边是大圆的短弧。这里R = 1。\n\n曲率K\n1\n边 1\n1.056\n边 2\n1.056\n边 3\n1.056\n\n这些是二维常曲率几何。本实验不测量宇宙的曲率，也不模拟时空。"
+    },
+    {
+      "id": "C03-external-source-labels",
+      "sources": [
+        {
+          "text": "01欧洲空间局 / Planck宇宙曲率与观测（英文）宇宙观测能够约束空间曲率。交互式曲面本身不能证明宇宙的形状。",
+          "url": "https://www.esa.int/Science_Exploration/Space_Science/Planck"
+        },
+        {
+          "text": "02Wolfram MathWorld球面三角形（英文）球面上的测地线沿大圆延伸。三角形内角和超出180°的部分，与其面积成正比。",
+          "url": "https://mathworld.wolfram.com/SphericalTriangle.html"
+        },
+        {
+          "text": "03Wolfram MathWorld庞加莱圆盘模型（英文）双曲平面的一个模型。它保留局部角度关系，而圆周处于无限远；图上的距离并非模型中的距离。",
+          "url": "https://mathworld.wolfram.com/PoincareHyperbolicDisk.html"
+        },
+        {
+          "text": "04Richard Montgomery · 加州大学圣克鲁兹分校三体“8”字轨道（英文）三个等质量物体的特殊周期解。它不意味着所有三体系统都作周期运动。",
+          "url": "https://people.ucsc.edu/~rmont/NbdyB.html"
+        },
+        {
+          "text": "05REBOUNDN体数值模拟（英文）用于研究的开源N体模拟软件。本实验使用ODEX求解器，并检查守恒量；并未在浏览器中运行REBOUND。",
+          "url": "https://rebound.readthedocs.io/"
+        },
+        {
+          "text": "小说《三体》（英文版） ↗",
+          "url": "https://us.macmillan.com/books/9780765382030/thethreebodyproblem/"
+        },
+        {
+          "text": "查看代码仓库 ↗",
+          "url": "https://github.com/mmkolpakov/Geometry-System"
+        }
+      ]
+    },
+    {
+      "id": "C03-layout",
+      "width": 390,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "cyrillicTextNodes": [
+        {
+          "tag": "OPTION",
+          "text": "Русский"
+        }
+      ],
+      "untranslatedContent": false
+    },
+    {
+      "id": "C03-layout",
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "cyrillicTextNodes": [
+        {
+          "tag": "OPTION",
+          "text": "Русский"
+        }
+      ],
+      "untranslatedContent": false
+    },
+    {
+      "id": "T06-fallback",
+      "url": "http://127.0.0.1:4173/?v=1&lang=zh-CN&view=lab&lab=geometry&geometry=sphere&size=0.65&preset=figure-eight&level=research&lesson=0&compare=0&dv=1&frame=0",
+      "notice": "无法访问剪贴板。请选择链接并手动复制。\n\n实验链接\n选择链接\n关闭"
+    }
+  ],
+  "errors": [],
+  "status": "PASS",
+  "bundle": "index-BHjXPrRY.js",
+  "visualEvidence": "Fresh final-bundle screenshots captured in this run"
+}

@@ -6,20 +6,14 @@ import {
   type ReactNode,
 } from "react";
 import { createInstance } from "i18next";
-import { I18nextProvider, initReactI18next } from "react-i18next";
 import { zhUI } from "./content/ui.zh";
 import { zhLabs } from "./content/labs.zh";
 
 export type Locale = "ru" | "zh-CN";
 
-/** The two shipped languages are explicit; no network language detection is used. */
-export function languageFrom(value: string | null | undefined): Locale {
-  return /^zh(?:[-_]|$)/i.test(value?.trim() ?? "") ? "zh-CN" : "ru";
-}
-
 export const i18n = createInstance();
 
-void i18n.use(initReactI18next).init({
+void i18n.init({
   lng: "ru",
   fallbackLng: "ru",
   supportedLngs: ["ru", "zh-CN"],
@@ -34,7 +28,6 @@ void i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
   returnNull: false,
   returnEmptyString: false,
-  react: { useSuspense: false },
 });
 
 /** A fixed language avoids one render of the previous language after a switch. */
@@ -92,9 +85,7 @@ export function LocaleProvider({
   }, [locale]);
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
-    </I18nextProvider>
+    <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
   );
 }
 
