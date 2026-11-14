@@ -1,0 +1,57 @@
+name: Дефект
+description: Воспроизводимая ошибка модели, интерфейса или сборки
+title: "[Bug] "
+body:
+  - type: textarea
+    id: repro
+    attributes:
+      label: Шаги воспроизведения
+      description: Начальное состояние, точные действия, параметры/пресет, commit или URL.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Ожидание и наблюдение
+      description: Что ожидалось, что произошло и почему это мешает пользователю?
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Влияние
+      options:
+        - P0 — основной сценарий недоступен или научный вывод существенно ложен
+        - P1 — основной сценарий/доступность повреждены, обход затруднён
+        - P2 — локальный дефект с обходом
+        - P3 — косметический дефект
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Среда и доказательства
+      description: Браузер, viewport, устройство, reduced motion, свежий скриншот или лог без секретов. Для физики — эталон и источник.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Проверка исправления
+      value: |
+        - [ ] Исходные шаги больше не воспроизводят дефект.
+        - [ ] Проверен соседний сценарий и применимый regression test.
+        - [ ] Независимый рецензент проверил результат.
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Stage
+      options:
+        - Backlog
+        - Ready
+        - Doing
+        - Review
+        - Blocked
+      default: 0
+    validations:
+      required: true

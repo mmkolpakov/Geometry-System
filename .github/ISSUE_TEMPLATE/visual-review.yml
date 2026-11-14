@@ -1,0 +1,53 @@
+name: Визуальная и UX-приёмка
+description: Независимая проверка реализованного пользовательского сценария
+title: "[Acceptance] "
+body:
+  - type: input
+    id: revision
+    attributes:
+      label: Commit и проверяемый URL/артефакт
+    validations:
+      required: true
+  - type: textarea
+    id: journey
+    attributes:
+      label: Шаги сценария и аудитория
+      description: Начало, действия, наблюдение и вывод; новичок и исследователь проверяются отдельно.
+    validations:
+      required: true
+  - type: textarea
+    id: captures
+    attributes:
+      label: Свежие скриншоты и среда
+      description: Для каждого шага — файл/URL, viewport, браузер, состояние и краткое наблюдение. Проверить сохранённые изображения перед выводами.
+    validations:
+      required: true
+  - type: textarea
+    id: findings
+    attributes:
+      label: Дефекты и ограничения проверки
+      description: Severity, точный шаг, влияние, исправление. Скриншоты не подтверждают физику или полную WCAG-доступность.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Матрица приёмки
+      options:
+        - label: Desktop 1440×900, tablet 768×1024, mobile 390×844
+        - label: Клавиатура, видимый фокус и доступные имена
+        - label: Reduced motion, пауза, сброс, ошибка/останов
+        - label: Русский текст, раскрытые формулы/источники, отсутствие overflow
+        - label: Основные области UI просмотрены независимым рецензентом
+  - type: dropdown
+    id: decision
+    attributes:
+      label: Решение рецензента
+      options:
+        - Review — доказательств пока недостаточно
+        - Doing — нужны исправления
+        - Accepted — применимые критерии выполнены
+        - Blocked — проверка невозможна, причина указана
+      default: 0
+    validations:
+      required: true
