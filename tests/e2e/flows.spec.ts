@@ -52,17 +52,17 @@ test('all geometries, intrinsic measurements, keyboard control and research laye
 
 test('journey quiz persists completed progress and advances to the next experiment', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByText('0 из 6 пройдено', { exact: true })).toBeVisible();
+  await expect(page.getByText('0 из 6: ответы проверены', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Проверить вывод' })).toBeDisabled();
   await page.getByRole('radio', { name: 'По геометрии поверхности сферы.' }).check();
   await page.getByRole('button', { name: 'Проверить вывод' }).click();
-  await expect(page.getByText('Опыт пройден', { exact: true })).toBeVisible();
-  await expect(page.getByText('1 из 6 пройдено', { exact: true })).toBeVisible();
+  await expect(page.getByText('Ответ проверен', { exact: true })).toBeVisible();
+  await expect(page.getByText('1 из 6: ответы проверены', { exact: true })).toBeVisible();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('kontur.progress.v1') || '[]'))).toContain('straight-path');
   // A new tab reads the progress stored by the completed experience.
   const secondPage = await page.context().newPage();
   await secondPage.goto(page.url());
-  await expect(secondPage.getByText('1 из 6 пройдено', { exact: true })).toBeVisible();
+  await expect(secondPage.getByText('1 из 6: ответы проверены', { exact: true })).toBeVisible();
   await secondPage.close();
   await page.getByRole('button', { name: 'Следующий опыт' }).click();
   await expect(page.getByRole('heading', { name: 'Может ли треугольник иметь три угла по 90°?' })).toBeVisible();
@@ -135,8 +135,8 @@ test('invalid shared parameters and unavailable storage preserve a usable experi
   await expect(page.getByRole('slider', { name: 'Размер треугольника' })).toHaveValue('0.75');
   await page.getByRole('radio', { name: 'По геометрии поверхности сферы.' }).check();
   await page.getByRole('button', { name: 'Проверить вывод' }).click();
-  await expect(page.getByText('Опыт пройден', { exact: true })).toBeVisible();
-  await expect(page.getByText('1 из 6 пройдено', { exact: true })).toBeVisible();
+  await expect(page.getByText('Ответ проверен', { exact: true })).toBeVisible();
+  await expect(page.getByText('1 из 6: ответы проверены', { exact: true })).toBeVisible();
 });
 
 test('share copies the exact reproducible experiment URL', async ({ page }) => {
@@ -162,7 +162,7 @@ test('shared three-body comparison restores perturbation and frame paused', asyn
   await expect(page.getByTestId('simulation-time')).toHaveText(savedTime);
   await expect(page.getByRole('slider', { name: 'Изменение начальной скорости Δvₓ' })).toHaveValue('4');
   await expect(page.getByTestId('playback-status')).toHaveText('На паузе');
-  await expect(page.getByRole('table')).toBeVisible();
+  await expect(page.getByRole('table', { name: /Положения в момент/ })).toBeVisible();
 });
 
 test('three-body playback, step, seek, comparison, presets and reset', async ({ page }) => {
@@ -198,7 +198,7 @@ test('three-body playback, step, seek, comparison, presets and reset', async ({ 
   await page.getByRole('button', { name: 'Неустойчивая тройка', exact: true }).click();
   await expect(page.getByTestId('threebody-visual')).toBeVisible();
   await page.getByRole('button', { name: 'Формулы и метод' }).click();
-  await expect(page.getByRole('table')).toBeVisible();
+  await expect(page.getByRole('table', { name: /Положения в момент/ })).toBeVisible();
   await accessible(page);
   await noOverflow(page);
 });

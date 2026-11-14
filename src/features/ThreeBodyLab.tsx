@@ -3,6 +3,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Pause, Play, RotateCcw, SkipForward } from 'lucide-react';
 import { diagnostics, NUMERICS, PRESETS, simulate, type PresetId, type Vector2 } from '../domain/nbody';
 import { ObserverSky } from './ObserverSky';
+import { createViewport, frameCadence } from '../domain/viewport';
 
 interface ThreeBodyLabProps {
   preset: PresetId;
@@ -46,6 +47,7 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
   const onFrame = useRef(onSampleIndexChange);
   onFrame.current = onSampleIndexChange;
   const comparisonSample = comparison?.samples[currentIndex];
+  const comparisonDrift = comparison && comparisonSample ? (comparisonSample.energy - comparison.initialEnergy) / Math.abs(comparison.initialEnergy) : 0;
   const measurements = useMemo(() => diagnostics(sample.bodies), [sample]);
   const drift = (sample.energy - simulation.initialEnergy) / Math.abs(simulation.initialEnergy);
   const difference = comparisonSample ? Math.sqrt(sample.bodies.reduce((total, body, index) => total
@@ -95,20 +97,8 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
     return () => cancelAnimationFrame(frame);
   }, [playing, simulation, maxIndex]);
 
-  const projection = useMemo(() => {
-    const points = [...simulation.trails.flat(), ...(comparison?.trails.flat() ?? [])];
-    const minimumX = Math.min(...points.map(point => point.x));
-    const maximumX = Math.max(...points.map(point => point.x));
-    const minimumY = Math.min(...points.map(point => point.y));
-    const maximumY = Math.max(...points.map(point => point.y));
-    const centerX = (minimumX + maximumX) / 2;
-    const centerY = (minimumY + maximumY) / 2;
-    const scale = Math.min(470 / Math.max(maximumX - minimumX, 1), 330 / Math.max(maximumY - minimumY, 1));
-    return {
-      point: (point: Vector2) => ({ x: 300 + (point.x - centerX) * scale, y: 222 - (point.y - centerY) * scale }),
-      scale,
-    };
-  }, [simulation, comparison]);
+  const projection = useMemo(() => createViewport(preset), [preset]);
+  const retainedInterval = frameCadence(simulation.samples);
 
   const path = (points: Vector2[]) => points.map((point, index) => {
     const screen = projection.point(point);
@@ -219,6 +209,7 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
         </div>
         <input id={`${uid}-time`} type="range" min="0" max={maxIndex} step="1" value={currentIndex} onChange={event => seek(Number(event.currentTarget.value))} aria-valuetext={t("{time} модельных единиц времени").replace("{time}", format(sample.time, 2))} />
         <p className="control-hint">{t("Движение начинается только по вашей команде. «Шаг» показывает следующий сохранённый кадр, а не один шаг интегратора.")}</p>
+        <p className="control-hint" data-testid="frame-cadence">{t("Кадры сохранены через {interval} ед. модельного времени; последний интервал может быть короче. Масштаб и центр вида фиксированы для выбранного пресета.").replace("{interval}", format(retainedInterval, 3))}</p>
         <label className="comparison-toggle" htmlFor={`${uid}-compare`}>
           <input id={`${uid}-compare`} type="checkbox" checked={comparisonEnabled} onChange={event => { reset(); onComparisonChange(event.currentTarget.checked); }} />
           {t("Сравнить близкие начальные условия")}
@@ -241,13 +232,26 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
 
       <div className="metric-grid">
         <div className="metric"><span>{t("Время модели")}</span><strong data-testid="simulation-time">{format(sample.time, 2)}</strong><small>{t("Условные единицы, не годы")}</small></div>
-        <div className="metric"><span>{t("Полная энергия E")}</span><strong>{format(sample.energy, 5)}</strong><small>{t("Кинетическая + потенциальная")}</small></div>
-        <div className="metric"><span>{t("Дрейф энергии")}</span><strong data-testid="energy-drift">{tiny(drift * 100)}%</strong><small>{t("От начального значения")}</small></div>
+        <div className="metric"><span>{t(comparisonEnabled ? "Полная энергия E · основная" : "Полная энергия E")}</span><strong>{format(sample.energy, 5)}</strong><small>{t("Кинетическая + потенциальная")}</small></div>
+        <div className="metric"><span>{t(comparisonEnabled ? "Дрейф энергии · основная" : "Дрейф энергии")}</span><strong data-testid="energy-drift">{tiny(drift * 100)}%</strong><small>{t("От начального значения")}</small></div>
       </div>
       {showObserver && <ObserverSky bodies={sample.bodies} time={sample.time} />}
 
-      {comparisonEnabled && (
-        <p className="lab-note comparison-result" role="status">{t("Среднеквадратичное расхождение положений:")} <strong>{format(difference, 5)}</strong> {t("ед. длины. Видимое расхождение само по себе не доказывает хаос.")}</p>
+      {comparison && comparisonSample && (
+        <>
+          <p className="lab-note comparison-result" role="status">{t("Среднеквадратичное расхождение положений:")} <strong>{format(difference, 5)}</strong> {t("ед. длины. Видимое расхождение само по себе не доказывает хаос.")}</p>
+          <div className="coordinate-table-wrap">
+            <table className="coordinate-table" data-testid="comparison-diagnostics">
+              <caption>{t("Энергия двух траекторий в один момент времени")}</caption>
+              <thead><tr><th scope="col">{t("Траектория")}</th><th scope="col">E₀</th><th scope="col">E(t)</th><th scope="col">{t("Дрейф энергии")}</th></tr></thead>
+              <tbody>
+                <tr data-testid="baseline-diagnostics"><th scope="row">{t("Основная")}</th><td>{format(simulation.initialEnergy, 5)}</td><td>{format(sample.energy, 5)}</td><td>{tiny(drift * 100)}%</td></tr>
+                <tr data-testid="perturbed-diagnostics"><th scope="row">{t("Сравнение")}</th><td>{format(comparison.initialEnergy, 5)}</td><td>{format(comparisonSample.energy, 5)}</td><td>{tiny(comparisonDrift * 100)}%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="control-hint">{t("Дрейф каждой траектории считается относительно её собственной начальной энергии. Малое значение не гарантирует точность координат.")}</p>
+        </>
       )}
       {(simulation.halted || comparison?.halted) && (
         <p className="lab-note" role="status"><strong>{t("Расчёт ограничен:")}</strong> {t(simulation.reason || comparison?.reason || '')} {t("Показаны последние состояния до защитной остановки; измените начальные условия для другого опыта.")}</p>
@@ -268,7 +272,8 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
           </table>
         </div>
         <p className="formula">aᵢ = Σⱼ≠ᵢ Gmⱼ(rⱼ − rᵢ) / |rⱼ − rᵢ|³</p>
-        <p>{t("{solver}: адаптивный расчёт с абсолютным и относительным допуском 10⁻⁹. Интервал вывода — {interval}; шаг интегрирования выбирает библиотека. Дрейф = (E(t) − E(0)) / |E(0)|. Начальная энергия: {energy}.").replace("{solver}", NUMERICS.solver).replace("{interval}", format(STEP, 3)).replace("{energy}", format(simulation.initialEnergy, 5))}</p>
+        {comparisonEnabled && <p>{t("Расхождение: d(t) = √(Σᵢ|rᵢ(t) − r′ᵢ(t)|² / 3). Сопоставляются одинаковые номера тел в один и тот же момент времени.")}</p>}
+        <p>{t("{solver}: адаптивный расчёт с абсолютным и относительным допуском 10⁻⁹. Сетка запросов к решателю — {interval}; сохраняется каждый девятый результат, обычно через {frameInterval}. Внутренний шаг интегрирования выбирает библиотека. Дрейф = (E(t) − E(0)) / |E(0)|. Начальная энергия: {energy}.").replace("{solver}", NUMERICS.solver).replace("{interval}", format(STEP, 3)).replace("{frameInterval}", format(retainedInterval, 3)).replace("{energy}", format(simulation.initialEnergy, 5))}</p>
         <p>{t("Модуль полного импульса: {momentum}. Угловой момент: {angular}. Минимальное расстояние сейчас: {distance}.").replace("{momentum}", tiny(measurements.momentum)).replace("{angular}", format(measurements.angularMomentum, 5)).replace("{distance}", format(measurements.minDistance, 4))}</p>
         <p>{t("Сближение менее 0,03 или относительная ошибка энергии более 1% останавливают расчёт. Малый дрейф энергии не гарантирует точность каждой координаты.")}</p>
       </details>

@@ -1,5 +1,5 @@
 import { LocaleProvider, useLocale } from "./i18n";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowLeft,
@@ -29,6 +29,8 @@ import {
   readProgress,
   readSession,
   saveProgress,
+  clearProgress,
+  PROGRESS_KEY,
   sessionQuery,
   type Session,
 } from "./state/session";
@@ -55,21 +57,64 @@ function AppContent({
   const [answer, setAnswer] = useState<number | null>(null);
   const [feedback, setFeedback] = useState("");
   const [copied, setCopied] = useState(false);
+  const [shareFallback, setShareFallback] = useState(false);
+  const [resetPrompt, setResetPrompt] = useState(false);
+  const [answerCorrect, setAnswerCorrect] = useState<boolean | null>(null);
+  const lessonHeading = useRef<HTMLHeadingElement>(null);
+  const pageHeading = useRef<HTMLHeadingElement>(null);
+  const focusNext = useRef(false);
+  const pushNavigation = useRef(false);
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  const resetButton = useRef<HTMLButtonElement>(null);
   const current = lessons[Math.min(session.lesson, lessons.length - 1)];
-  const update = (patch: Partial<Session>) =>
-    setSession((s) => ({ ...s, ...patch }));
+  const update = (patch: Partial<Session>) => {
+    if (patch.view !== undefined || patch.lesson !== undefined) {
+      pushNavigation.current = true;
+      focusNext.current = true;
+    }
+    setSession((previous) => ({ ...previous, ...patch }));
+  };
   useEffect(() => {
-    history.replaceState(null, "", "?" + sessionQuery(session));
+    const url = "?" + sessionQuery(session);
+    if (pushNavigation.current) {
+      history.pushState(null, "", url);
+      pushNavigation.current = false;
+    } else history.replaceState(null, "", url);
+    if (focusNext.current) {
+      focusNext.current = false;
+      const target =
+        session.view === "journey"
+          ? lessonHeading.current
+          : pageHeading.current;
+      target?.focus({ preventScroll: true });
+      target?.scrollIntoView({ block: "start", behavior: "instant" });
+    }
   }, [session]);
   useEffect(() => {
-    const listener = () => setSession(readSession(location.search));
+    const listener = () => {
+      focusNext.current = true;
+      setSession(readSession(location.search));
+    };
+    const progressListener = (event: StorageEvent) => {
+      if (event.key === PROGRESS_KEY || event.key === null)
+        setCompleted(readProgress());
+    };
     window.addEventListener("popstate", listener);
-    return () => window.removeEventListener("popstate", listener);
+    window.addEventListener("storage", progressListener);
+    return () => {
+      window.removeEventListener("popstate", listener);
+      window.removeEventListener("storage", progressListener);
+      clearTimeout(copyTimer.current);
+    };
   }, []);
   useEffect(() => {
     setAnswer(null);
     setFeedback("");
-  }, [session.lesson, locale]);
+    setAnswerCorrect(null);
+    setShareFallback(false);
+  }, [session.lesson, session.view, locale]);
   function openLesson(index: number) {
     const l = lessons[index];
     update({
@@ -83,28 +128,34 @@ function AppContent({
     });
     setAnswer(null);
     setFeedback("");
+    setAnswerCorrect(null);
   }
   async function share() {
+    clearTimeout(copyTimer.current);
     try {
       await navigator.clipboard.writeText(location.href);
+      setShareFallback(false);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      copyTimer.current = setTimeout(() => setCopied(false), 2000);
     } catch {
-      setFeedback(
-        t(
-          "Ссылка находится в адресной строке браузера. Её можно скопировать вручную.",
-        ),
-      );
+      setCopied(false);
+      setShareFallback(true);
     }
   }
   function confirm() {
     if (answer === null) return;
-    if (answer === current.quiz.answer) {
-      const next = [...new Set([...completed, current.id])];
-      setCompleted(next);
-      saveProgress(next);
-    }
+    const correct = answer === current.quiz.answer;
+    setAnswerCorrect(correct);
+    if (correct) setCompleted(saveProgress([...completed, current.id]));
     setFeedback(current.quiz.explanation);
+  }
+  function resetProgress() {
+    setCompleted(clearProgress());
+    setResetPrompt(false);
+    setAnswer(null);
+    setFeedback("");
+    setAnswerCorrect(null);
+    resetButton.current?.focus();
   }
   const lab = (
     <>
@@ -155,7 +206,22 @@ function AppContent({
             <option value="zh-CN">简体中文</option>
           </select>
         </div>
-        <a className="brand" href="?">
+        <a
+          className="brand"
+          href={"?" + sessionQuery({ ...defaults, language: session.language })}
+          onClick={(event) => {
+            if (
+              event.ctrlKey ||
+              event.metaKey ||
+              event.shiftKey ||
+              event.altKey ||
+              event.button !== 0
+            )
+              return;
+            event.preventDefault();
+            update({ ...defaults, language: session.language });
+          }}
+        >
           <span className="brand-mark">
             <Orbit size={25} />
           </span>
@@ -198,6 +264,35 @@ function AppContent({
           <span>{copied ? t("Скопировано") : t("Поделиться опытом")}</span>
         </button>
       </header>
+      {shareFallback && (
+        <section className="share-fallback" aria-label={t("Ссылка на опыт")}>
+          <p role="status">
+            {t(
+              "Буфер обмена недоступен. Выделите ссылку и скопируйте её вручную.",
+            )}
+          </p>
+          <label htmlFor="share-url">{t("Ссылка на опыт")}</label>
+          <input
+            id="share-url"
+            readOnly
+            value={location.href}
+            onFocus={(event) => event.currentTarget.select()}
+          />
+          <button
+            type="button"
+            onClick={() => {
+              (
+                document.getElementById("share-url") as HTMLInputElement
+              )?.select();
+            }}
+          >
+            {t("Выделить ссылку")}
+          </button>
+          <button type="button" onClick={() => setShareFallback(false)}>
+            {t("Закрыть")}
+          </button>
+        </section>
+      )}
       <main id="main">
         {session.view === "journey" && (
           <>
@@ -315,9 +410,48 @@ function AppContent({
               <span className="progress-label">
                 <CheckCircle2 size={16} />
                 {locale === "zh-CN"
-                  ? `已完成 ${completed.length} / ${lessons.length}`
-                  : `${completed.length} из ${lessons.length} пройдено`}
+                  ? `已核对 ${completed.length} / ${lessons.length}`
+                  : `${completed.length} из ${lessons.length}: ответы проверены`}
               </span>
+            </div>
+            <div className="progress-actions">
+              <button
+                type="button"
+                className="text-button"
+                ref={resetButton}
+                onClick={() => setResetPrompt(true)}
+              >
+                {t("Сбросить учебный прогресс")}
+              </button>
+              {resetPrompt && (
+                <div
+                  role="group"
+                  aria-label={t("Подтверждение сброса прогресса")}
+                >
+                  <p>
+                    {t(
+                      "Удалить отметки о проверенных ответах в этом браузере?",
+                    )}
+                  </p>
+                  <button
+                    type="button"
+                    className="text-button"
+                    onClick={resetProgress}
+                  >
+                    {t("Удалить отметки")}
+                  </button>
+                  <button
+                    type="button"
+                    className="text-button"
+                    onClick={() => {
+                      setResetPrompt(false);
+                      resetButton.current?.focus();
+                    }}
+                  >
+                    {t("Отмена")}
+                  </button>
+                </div>
+              )}
             </div>
             <section className="journey-layout" id="experiment">
               <aside className="journey-sidebar">
@@ -371,7 +505,9 @@ function AppContent({
                         : t("ДИНАМИКА")}
                     </span>
                   </div>
-                  <h2>{current.question}</h2>
+                  <h2 ref={lessonHeading} tabIndex={-1}>
+                    {current.question}
+                  </h2>
                   <p>{current.context}</p>
                   {current.source && (
                     <a
@@ -438,6 +574,7 @@ function AppContent({
                         onChange={() => {
                           setAnswer(index);
                           setFeedback("");
+                          setAnswerCorrect(null);
                         }}
                       />
                       <span>{option}</span>
@@ -455,13 +592,29 @@ function AppContent({
                     {completed.includes(current.id) && (
                       <span className="success">
                         <CheckCircle2 size={16} />
-                        {t("Опыт пройден")}
+                        {t("Ответ проверен")}
                       </span>
                     )}
                   </div>
-                  <p className="feedback" role="status">
-                    {feedback}
-                  </p>
+                  <div
+                    className={
+                      answerCorrect === false
+                        ? "feedback needs-review"
+                        : "feedback"
+                    }
+                    role="status"
+                  >
+                    {answerCorrect !== null && (
+                      <strong>
+                        {answerCorrect
+                          ? t("Верно. Вывод подтверждён.")
+                          : t(
+                              "Пока не совсем. Сверьте вывод с опытом и попробуйте снова.",
+                            )}
+                      </strong>
+                    )}
+                    {feedback && <p>{feedback}</p>}
+                  </div>
                 </fieldset>
                 <div className="lesson-footer">
                   <button
@@ -489,7 +642,9 @@ function AppContent({
           <section className="standalone">
             <div className="page-heading">
               <p className="eyebrow dark">{t("СВОБОДНОЕ ИССЛЕДОВАНИЕ")}</p>
-              <h1>{t("Лаборатория")}</h1>
+              <h1 ref={pageHeading} tabIndex={-1}>
+                {t("Лаборатория")}
+              </h1>
               <p>
                 {t("Один параметр. Одно изменение. Наблюдаемый результат.")}
               </p>
@@ -540,7 +695,9 @@ function AppContent({
           <section className="standalone library">
             <div className="page-heading">
               <p className="eyebrow dark">{t("ПРОВЕРЯЕМЫЕ ОСНОВАНИЯ")}</p>
-              <h1>{t("Где заканчивается модель")}</h1>
+              <h1 ref={pageHeading} tabIndex={-1}>
+                {t("Где заканчивается модель")}
+              </h1>
               <p>
                 {t(
                   "Вопросы взяты из художественного мира. Ответы нужно проверять за его пределами.",

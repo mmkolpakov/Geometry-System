@@ -93,22 +93,51 @@ export function sessionQuery(s: Session) {
     frame: String(s.sampleIndex),
   }).toString();
 }
+/** Stable key shared by persistence and the cross-tab storage listener. */
+export const PROGRESS_KEY = "kontur.progress.v1";
+const knownLessonIds = new Set(lessons.map((lesson) => lesson.id));
+
+/** Old or edited browser data cannot inflate the six-lesson completion count. */
+export function normalizeProgress(value: unknown): string[] {
+  return Array.isArray(value)
+    ? [
+        ...new Set(
+          value.filter(
+            (id): id is string =>
+              typeof id === "string" && knownLessonIds.has(id),
+          ),
+        ),
+      ]
+    : [];
+}
+
 export function readProgress(): string[] {
   try {
-    const value: unknown = JSON.parse(
-      localStorage.getItem("kontur.progress.v1") ?? "[]",
+    return normalizeProgress(
+      JSON.parse(localStorage.getItem(PROGRESS_KEY) ?? "[]"),
     );
-    return Array.isArray(value)
-      ? value.filter((x): x is string => typeof x === "string")
-      : [];
   } catch {
     return [];
   }
 }
-export function saveProgress(ids: string[]) {
+
+/** Merge the latest saved progress so a stale second tab does not erase completed lessons. */
+export function saveProgress(ids: string[]): string[] {
+  const completed = normalizeProgress([...readProgress(), ...ids]);
   try {
-    localStorage.setItem("kontur.progress.v1", JSON.stringify(ids));
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(completed));
   } catch {
-    /* Learning remains available when browser storage is disabled. */
+    // The current tab still receives its valid progress when persistence is unavailable.
   }
+  return completed;
+}
+
+/** An explicit reset bypasses merge; an empty value also notifies other open tabs. */
+export function clearProgress(): string[] {
+  try {
+    localStorage.setItem(PROGRESS_KEY, "[]");
+  } catch {
+    // Reset remains available in the current tab with storage disabled.
+  }
+  return [];
 }
