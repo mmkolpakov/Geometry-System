@@ -43,3 +43,5 @@ npm run test:e2e
 Основной интерфейс собирается без сторонних runtime CDN, внешних шрифтов и аналитических трекеров. Исходная лицензия MIT сохранена; лицензии зависимостей включаются в сборку.
 
 Дизайн-система и локализация: [источники решений](docs/research/design-system.md), [китайская адаптация](docs/research/localization.md), [независимая визуальная проверка](docs/acceptance/design-localization.md).
+
+Приёмка с людьми: [роли, ожидания и сценарии](docs/research/acceptance-personas.md) · [популярность книг и экранизаций](docs/research/audience-popularity.md) · [бланк наблюдения](docs/acceptance/audience-pilot.md). Ожидания пока остаются гипотезами; пилот не проведён.
