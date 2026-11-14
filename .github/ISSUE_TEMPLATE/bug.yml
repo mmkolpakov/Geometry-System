@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a problem with a model, interface or build.
+title: "[Bug] "
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the experiment URL or parameters and the actions you took.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, device, app version or commit. For build issues, include Node.js version and command.
+  - type: textarea
+    id: details
+    attributes:
+      label: Supporting details
+      description: Screenshots, logs or a reference calculation. Remove private information.
