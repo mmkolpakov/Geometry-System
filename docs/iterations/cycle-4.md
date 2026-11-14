@@ -27,3 +27,5 @@
 Все изменения собираются в один review PR, затем принимаются в main. После CI — тег v1.0.0, готовый статический архив и контрольная сумма, публикация через GitHub Actions Pages, smoke живого адреса. Рабочие ветки удаляются лишь после проверки, что их коммиты доступны из main. Точный PR/merge/deploy записаны в итоговом решении и GitHub Release.
 
 Ретроспектива: проверка количества строк сама по себе не обнаружила бы двойной слой переводов. Теперь release review требует карту обязанностей, импортов и полной стоимости замены, а не обязательную новую библиотеку или искусственное сокращение LOC.
+
+README rewritten in English as a role-based entry: four starting paths, six experiments, exact setup and links to evidence. Independent science, code and audience reviewers accepted the text after corrections to progress storage, separate RAPID owners and numerical stop limits. This was editorial and factual review, not a claim to detect authorship from prose. The interface remains Russian and Simplified Chinese.

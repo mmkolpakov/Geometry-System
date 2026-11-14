@@ -1,49 +1,82 @@
-# Контур
+# Kontur · Контур · 界线
 
-Интерактивная лаборатория геометрии и задачи трёх тел по мотивам трилогии Лю Цысиня. Интерфейс доступен на русском и упрощённом китайском; язык сохраняется в ссылке. Шесть опытов ведут от вопроса к наблюдению, объяснению и проверке понимания. Формулы, источники и ограничения доступны в том же интерфейсе.
+Six interactive experiments about geometry and three-body motion, prompted by Liu Cixin’s trilogy. Change a parameter, inspect the numbers, and compare your prediction with the result. Formulas, model assumptions and sources are available alongside each experiment.
 
-## Запуск
+The app is available in **Russian and Simplified Chinese**. This README is in English; there is no English interface. Most research and acceptance documents linked below are in Russian.
 
-Node.js 22 LTS (версия указана в `.nvmrc`).
+## Choose a starting point
+
+| What brings you here? | Try this |
+| --- | --- |
+| Curious about geometry or space | Start with experiment 01. Resize a triangle on the plane, then on the sphere. Compare the angle sums before opening the formulas. |
+| Read the books or watched Netflix or Tencent | Choose a question you recognise. Book context opens only after a spoiler warning; the scientific experiment works without it. The scenes and orbits are educational models, not reconstructions of either adaptation. |
+| Preparing a lesson or discussion | Ask for a prediction and change one parameter. In the three-body lab, pause, step and reset the motion; share a link to reproduce a chosen state. |
+| Reviewing the mathematics or code | Open the formula view and sources. Inspect units, initial conditions, both trajectories’ energy diagnostics and the independent numerical comparison. |
+
+In the app, the guided route is **Маршрут / 探索路径**, the free laboratory is **Лаборатория / 实验室**, and model references are **Основания / 模型与依据**.
+
+## The six experiments
+
+| # | Question | What you can check |
+| --- | --- | --- |
+| 01 | Why can a shortest path look curved? | Compare the plane and sphere; separate geometry on a surface from its screen projection. |
+| 02 | Can a triangle have three right angles? | Set the spherical triangle to its maximum size: three 90° angles add to 270°. |
+| 03 | Can an infinite plane fit inside a circle? | Explore the Poincaré disk, then rotate two 3D points to see what a projection hides. |
+| 04 | Must three attracting bodies move irregularly? | Run the special Lagrange triangle solution and inspect directions and relative irradiance at a fixed observer. |
+| 05 | Can three equal masses repeat a shared path? | Run the figure-eight solution and compare a periodic mathematical orbit with its numerical approximation. |
+| 06 | What changes when the initial velocity changes? | Compare nearby initial states at the same model time, with trajectory separation and energy diagnostics. |
+
+## Run locally
+
+Use **Node.js 22.12 or newer**. The repository’s `.nvmrc` selects Node 22.
 
 ```sh
+git clone https://github.com/mmkolpakov/Geometry-System.git
+cd Geometry-System
 npm ci
 npm run dev
 ```
 
-Адрес: `http://localhost:3000`. API-ключи, сервер и база данных не нужны. Учебный прогресс хранится только в localStorage браузера; ссылкой передаются параметры опыта, но не прогресс.
+Open [localhost:3000](http://localhost:3000). The app runs in the browser without an account, API key, backend or database.
 
-## Проверки
+A shared URL preserves the selected model, parameters, language and saved frame. Marks for lessons answered correctly stay in that browser’s local storage; individual answers and these marks are not included in the link. Spoiler disclosure is local to the current view and is not shared or stored. The app contains no analytics tracker.
+
+## Build and check
 
 ```sh
-npm run typecheck
-npm test
-npm run build
 npx playwright install chromium
-npm run test:e2e
+npm run check
 ```
 
-`npm run check` выполняет все проверки. E2E использует production preview на порту 4173. Для системного Chromium можно задать `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
+`check` runs TypeScript, unit tests, the production build and end-to-end tests. Playwright starts a production preview on port 4173. On Linux, `npx playwright install --with-deps chromium` also installs required system libraries. To use an existing Chromium binary, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
 
-## Устройство
+For a production preview without the full test run:
 
-- `src/domain/` — адаптеры математических библиотек, ограничения моделей и инварианты.
-- `src/features/` — две SVG-лаборатории; диаграмма и текстовые числа используют одни данные.
-- `src/content/` — учебный маршрут и источники.
-- `src/state/` — проверка параметров URL и локальный прогресс.
-- `docs/research/` — источники, продуктовые гипотезы и трассировка книги → модель → проверка.
-- `docs/acceptance/` — исходные/новые экраны и независимая численная проверка.
+```sh
+npm run build
+npm run preview -- --port 4173
+```
 
-Модель постоянной кривизны двумерная: она не реализует пространство-время FLRW и не доказывает форму нашей Вселенной. Три тела — ньютоновские точечные массы в безразмерных единицах. Близкие сближения и накопленная ошибка ограничивают расчёт. Художественные мотивы не объявляются научными фактами. Лаборатория не является официальной адаптацией книг.
+The static output is in `dist/`. See the [deployment and rollback guide](docs/deployment.md) for GitHub Pages and archive deployment. Versioned downloads will be listed on the [v1.0.0 release page](https://github.com/mmkolpakov/Geometry-System/releases/tag/v1.0.0) after publication; this README does not yet point to a verified hosted demo.
 
-## Работа и выпуск
+## What the models mean
 
-[Kanban и правила приёмки](docs/process.md) · [Backlog](docs/backlog.md) · [Развёртывание и откат](docs/deployment.md) · [Сценарий демонстрации](docs/demo.md)
+Geometry uses two-dimensional spaces of constant curvature. These experiments do not determine the shape of the Universe or model relativistic spacetime. Three-body motion uses Newtonian point masses in dimensionless units; the observer is fixed, with no planet, eclipses or climate model. The projection experiment changes the view of 3D points, not the dimension of physical space.
 
-Основной интерфейс собирается без сторонних runtime CDN, внешних шрифтов и аналитических трекеров. Исходная лицензия MIT сохранена; лицензии зависимостей включаются в сборку.
+ODEX handles numerical integration, d3-geo supplies spherical operations, and gl-matrix supplies rotations. Close approaches or excessive energy drift stop a run. A small energy drift alone does not establish coordinate accuracy; visible trajectory separation alone does not establish chaos. The [scientific contract](docs/research/science.md) and [numerical comparison](docs/acceptance/numerical-reference.md) give the assumptions and checks.
 
-Дизайн-система и локализация: [источники решений](docs/research/design-system.md), [китайская адаптация](docs/research/localization.md), [независимая визуальная проверка](docs/acceptance/design-localization.md).
+## Find the evidence or contribute
 
-Приёмка с людьми: [роли, ожидания и сценарии](docs/research/acceptance-personas.md) · [популярность книг и экранизаций](docs/research/audience-popularity.md) · [бланк наблюдения](docs/acceptance/audience-pilot.md). Ожидания пока остаются гипотезами; пилот не проведён.
+| Purpose | Documents |
+| --- | --- |
+| Plan a session | [Seven-minute demonstration](docs/demo.md), [roles and tasks](docs/research/acceptance-personas.md) |
+| Trace a book motif to a model | [Literary and scientific traceability](docs/research/traceability.md), [spoiler policy](docs/research/spoiler-policy.md) |
+| Understand the audience and language choices | [Book and adaptation evidence](docs/research/audience-popularity.md), [design system](docs/research/design-system.md), [Chinese adaptation](docs/research/localization.md) |
+| Review this release | [RAPID decision](docs/acceptance/rapid-decision.md), [science](docs/acceptance/rapid-science.md), [UX](docs/acceptance/rapid-ux.md), [teaching scenarios](docs/acceptance/rapid-teaching.md) |
+| Change or maintain the code | [Kanban and acceptance rules](docs/process.md), [backlog](docs/backlog.md), [dependencies](docs/research/dependencies.md), [maintenance review](docs/research/maintenance-cost.md) |
 
-Согласование выпуска: [RAPID](docs/acceptance/rapid-decision.md) · [код и стоимость сопровождения](docs/research/maintenance-cost.md) · [политика спойлеров](docs/research/spoiler-policy.md).
+Release acceptance uses **RAPID**: one recommendation owner, one decision owner, independent science and UX reviewers, and implementation and audience inputs. The linked reports record expert checks performed by agents. They do not report user interviews, measured learning outcomes, native-language editing or tests on physical mobile devices and screen readers. A [participant-study template](docs/acceptance/audience-pilot.md) remains available for future research.
+
+Code is organised by responsibility: `src/domain/` contains model calculations, `src/features/` the experiments, `src/content/` the lessons and translations, and `src/state/` URL validation and local progress. Keep scientific changes tied to an assumption, a source and a reproducible check.
+
+Licensed under [MIT](LICENSE). Dependency notices are generated into `dist/THIRD_PARTY_NOTICES.txt` during the build. Kontur is an independent educational project, not an official adaptation of the books or television series.
