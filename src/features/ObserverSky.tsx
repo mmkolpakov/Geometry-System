@@ -1,10 +1,9 @@
+import { useLocale } from "../i18n";
 import { useId } from "react";
 import type { Body } from "../domain/nbody";
 import { observe } from "../domain/observer";
 
 const colors = ["#9be1cb", "#f2cf8d", "#c8b6f1"];
-const number = (value: number, digits = 3) =>
-  value.toLocaleString("ru-RU", { maximumFractionDigits: digits });
 
 export function ObserverSky({
   bodies,
@@ -13,6 +12,7 @@ export function ObserverSky({
   bodies: Body[];
   time: number;
 }) {
+  const { t, locale, number } = useLocale();
   const id = useId();
   let sky;
   try {
@@ -20,24 +20,26 @@ export function ObserverSky({
   } catch {
     return (
       <p className="lab-note" role="status">
-        Наблюдение недоступно: координаты некорректны или источник совпал с наблюдателем.
-        Динамический расчёт не изменён.
+        {t(
+          "Наблюдение недоступно: координаты некорректны или источник совпал с наблюдателем. Динамический расчёт не изменён.",
+        )}
       </p>
     );
   }
   return (
     <section
       className="observer-sky"
-      aria-label="Небо неподвижного наблюдателя"
+      aria-label={t("Небо неподвижного наблюдателя")}
       data-testid="observer-sky"
     >
       <div className="observer-heading">
-        <h3>Одни траектории — другое небо</h3>
+        <h3>{t("Одни траектории — другое небо")}</h3>
         <span>t = {number(time, 2)}</span>
       </div>
       <p>
-        Наблюдатель закреплён в точке (0; −4). Смотрите, как меняются
-        направления на три источника и их суммарный поток.
+        {t(
+          "Наблюдатель закреплён в точке (0; −4). Смотрите, как меняются направления на три источника и их суммарный поток.",
+        )}
       </p>
       <svg
         className="scene-svg observer-strip"
@@ -46,12 +48,13 @@ export function ObserverSky({
         aria-labelledby={`${id}-title ${id}-desc`}
       >
         <title id={`${id}-title`}>
-          Направления на три источника в момент {number(time, 2)}
+          {t("Направления на три источника в момент")}
+          {number(time, 2)}
         </title>
         <desc id={`${id}-desc`}>
-          Развёртка 360 градусов. Ноль соответствует направлению +y. Источники
-          разнесены по строкам только для читаемости. Значения направлений и
-          потоков приведены под рисунком.
+          {t(
+            "Развёртка 360 градусов. Ноль соответствует направлению +y. Источники разнесены по строкам только для читаемости. Значения направлений и потоков приведены под рисунком.",
+          )}
         </desc>
         <rect width="600" height="205" fill="#10212b" rx="8" />
         {[0, 90, 180, 270, 360].map((angle) => (
@@ -92,12 +95,12 @@ export function ObserverSky({
       </svg>
       <div className="observer-measurements">
         <table className="coordinate-table">
-          <caption>Мгновенные направления и условный поток</caption>
+          <caption>{t("Мгновенные направления и условный поток")}</caption>
           <thead>
             <tr>
-              <th scope="col">Источник</th>
-              <th scope="col">Азимут</th>
-              <th scope="col">Поток</th>
+              <th scope="col">{t("Источник")}</th>
+              <th scope="col">{t("Азимут")}</th>
+              <th scope="col">{t("Поток")}</th>
             </tr>
           </thead>
           <tbody>
@@ -111,19 +114,21 @@ export function ObserverSky({
           </tbody>
         </table>
         <p className="observer-total">
-          Суммарный поток{" "}
+          {t("Суммарный поток")}{" "}
           <strong data-testid="observer-flux">
             {number(sky.totalFlux, 5)}
           </strong>
-          <small>условных единиц · F = Σ 1/rᵢ²</small>
+          <small>{t("условных единиц · F = Σ 1/rᵢ²")}</small>
         </p>
       </div>
       <p className="model-boundary">
-        Наблюдатель не является планетой и не участвует в гравитации. Источникам
-        условно задана одинаковая постоянная светимость; поток нормирован так,
-        что при r = 1 он равен 1. Пояс показывает направления, а не фотографию
-        неба: строки не означают высоту. Размеры звёзд, затмения, задержка
-        света, цвет и климат не моделируются.
+        {t(
+          "Движение ограничено плоскостью; свет распространяется изотропно в трёхмерном пространстве.",
+        )}
+        <br />
+        {t(
+          "Наблюдатель не является планетой и не участвует в гравитации. Источникам условно задана одинаковая постоянная светимость; поток нормирован так, что при r = 1 он равен 1. Пояс показывает направления, а не фотографию неба: строки не означают высоту. Размеры звёзд, затмения, задержка света, цвет и климат не моделируются.",
+        )}
       </p>
     </section>
   );

@@ -1,8 +1,10 @@
+import { useLocale } from "../i18n";
 import { useId, useMemo, useState } from "react";
 import { mat4, vec3 } from "gl-matrix";
 
 /** A projection discards depth; rotating the same 3D points reveals the lost information. */
 export function DimensionDemo() {
+  const { t, locale, number } = useLocale();
   const [angle, setAngle] = useState(0);
   const id = useId();
   const points = useMemo(() => {
@@ -21,17 +23,18 @@ export function DimensionDemo() {
   return (
     <section
       className="formula-card projection-demo"
-      aria-label="Размерность и проекция"
+      aria-label={t("Размерность и проекция")}
     >
-      <h3>Почему плоский рисунок не рассказывает всё</h3>
+      <h3>{t("Почему плоский рисунок не рассказывает всё")}</h3>
       <p>
-        В «Вечной жизни» меняется размерность пространства. Здесь гораздо более
-        скромный опыт: две неподвижные точки в 3D проецируются на экран. Их
-        глубина теряется в изображении, но сохраняется в модели.
+        {t(
+          "В «Вечной жизни» меняется размерность пространства. Здесь гораздо более скромный опыт: две неподвижные точки в 3D проецируются на экран. Их глубина теряется в изображении, но сохраняется в модели.",
+        )}
       </p>
       <p>
-        Исходные точки: A = (0, 0, −1), B = (0, 0, 1). Их расстояние в
-        пространстве всегда равно 2.
+        {t(
+          "Исходные точки: A = (0, 0, −1), B = (0, 0, 1). Их расстояние в пространстве всегда равно 2.",
+        )}
       </p>
       <svg
         viewBox="0 0 600 160"
@@ -40,8 +43,9 @@ export function DimensionDemo() {
         data-testid="dimension-visual"
       >
         <title id={`${id}-title`}>
-          При нулевом повороте проекции двух разных точек совпадают. При
-          повороте они расходятся.
+          {t(
+            "При нулевом повороте проекции двух разных точек совпадают. При повороте они расходятся.",
+          )}
         </title>
         <path
           d="M40 80H560M300 20V140"
@@ -50,7 +54,7 @@ export function DimensionDemo() {
           strokeDasharray="4 5"
         />
         <text x="22" y="24" fill="#465e3d" fontSize="12">
-          ПРОЕКЦИЯ НА ЭКРАН · ГЛУБИНА СКРЫТА
+          {t("ПРОЕКЦИЯ НА ЭКРАН · ГЛУБИНА СКРЫТА")}
         </text>
         {points.map((p, i) => (
           <g key={i}>
@@ -75,7 +79,8 @@ export function DimensionDemo() {
         ))}
       </svg>
       <label className="range-label" htmlFor={`${id}-rotation`}>
-        Поворот объекта <output>{angle}°</output>
+        {t("Поворот объекта")}
+        <output>{angle}°</output>
       </label>
       <input
         id={`${id}-rotation`}
@@ -87,17 +92,14 @@ export function DimensionDemo() {
         onChange={(event) => setAngle(Number(event.target.value))}
       />
       <p data-testid="projection-distance">
-        Расстояние в пространстве: <strong>2,00</strong> · на изображении:{" "}
-        <strong>
-          {Math.abs(points[1][0] - points[0][0])
-            .toFixed(2)
-            .replace(".", ",")}
-        </strong>
+        {t("Расстояние в пространстве:")}
+        <strong>{number(2, 2)}</strong> {t("· на изображении:")}{" "}
+        <strong>{number(Math.abs(points[1][0] - points[0][0]), 2)}</strong>
       </p>
       <small>
-        Ортографическая проекция π(x, y, z) = (x, y). Поворот вычисляет
-        gl-matrix. Это не модель физического уменьшения размерности и не
-        механизм оружия из романа.
+        {t(
+          "Ортографическая проекция π(x, y, z) = (x, y). Поворот вычисляет gl-matrix. Это не модель физического уменьшения размерности и не механизм оружия из романа.",
+        )}
       </small>
     </section>
   );

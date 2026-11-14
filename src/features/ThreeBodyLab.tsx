@@ -1,3 +1,4 @@
+import { useLocale } from '../i18n';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Pause, Play, RotateCcw, SkipForward } from 'lucide-react';
 import { diagnostics, NUMERICS, PRESETS, simulate, type PresetId, type Vector2 } from '../domain/nbody';
@@ -18,11 +19,6 @@ interface ThreeBodyLabProps {
 const COLORS = ['#9be1cb', '#f2cf8d', '#c8b6f1'];
 const DURATION = 20;
 const STEP = 0.004;
-const format = (value: number, digits = 3) => value.toLocaleString('ru-RU', {
-  minimumFractionDigits: digits,
-  maximumFractionDigits: digits,
-});
-const tiny = (value: number) => Math.abs(value) < 1e-12 ? '0' : value.toExponential(2).replace('.', ',');
 
 export function ThreeBodyLab(props: ThreeBodyLabProps) {
   // Preset changes begin paused. Parameter changes preserve keyboard focus.
@@ -30,6 +26,9 @@ export function ThreeBodyLab(props: ThreeBodyLabProps) {
 }
 
 function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabled, onComparisonChange, perturbation, onPerturbationChange, sampleIndex, onSampleIndexChange }: ThreeBodyLabProps) {
+  const { t, number, locale } = useLocale();
+  const format = (value: number, digits = 3) => number(value, digits);
+  const tiny = (value: number) => Math.abs(value) < 1e-12 ? '0' : value.toExponential(2).replace('.', locale === 'zh-CN' ? '.' : ',');
   const simulation = useMemo(() => simulate(preset, DURATION / STEP, STEP), [preset]);
   const comparison = useMemo(
     () => comparisonEnabled ? simulate(preset, DURATION / STEP, STEP, perturbation) : null,
@@ -143,12 +142,12 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
   const scaleLength = projection.scale >= 50 ? 1 : projection.scale >= 20 ? 2 : 5;
 
   return (
-    <section className="lab-panel threebody-lab" aria-label="Лаборатория трёх тел">
+    <section className="lab-panel threebody-lab" aria-label={t("Лаборатория трёх тел")}>
       <div className="lab-toolbar">
-        <div className="segmented" role="group" aria-label="Начальные условия трёх тел">
+        <div className="segmented" role="group" aria-label={t("Начальные условия трёх тел")}>
           {PRESETS.map(option => (
             <button type="button" key={option.id} aria-pressed={preset === option.id} onClick={() => onPresetChange(option.id)}>
-              {option.name}
+              {t(option.name)}
             </button>
           ))}
         </div>
@@ -157,12 +156,12 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
 
       <div className="threebody-scene">
         <svg className="scene-svg" viewBox="0 0 600 440" role="img" aria-labelledby={`${uid}-title ${uid}-desc`} data-testid="threebody-visual">
-          <title id={`${uid}-title`}>{PRESETS.find(option => option.id === preset)?.name}: движение трёх равных масс</title>
+          <title id={`${uid}-title`}>{t("{preset}: движение трёх равных масс").replace("{preset}", t(PRESETS.find(option => option.id === preset)?.name ?? ""))}</title>
           <desc id={`${uid}-desc`}>
-            Время {format(sample.time, 2)} модельных единиц. Сплошные цветные линии показывают пройденный путь каждого тела с номером от 1 до 3.
-            Бледные линии показывают весь предварительно рассчитанный путь до конца опыта.
-            {comparisonEnabled ? `Пунктир — сравнение с изменением начальной скорости. Среднеквадратичное расхождение положений ${format(difference, 5)}.` : ''}
-            Численные координаты и энергия доступны ниже рисунка.
+            {t("Время {time} модельных единиц. Сплошные цветные линии показывают пройденный путь каждого тела с номером от 1 до 3.").replace("{time}", format(sample.time, 2))}
+            {t("Бледные линии показывают весь предварительно рассчитанный путь до конца опыта.")}
+            {comparisonEnabled ? t('Пунктир — сравнение с изменением начальной скорости. Среднеквадратичное расхождение положений: {difference}.').replace('{difference}', format(difference, 5)) : ''}
+            {t("Численные координаты и энергия доступны ниже рисунка.")}
           </desc>
           <defs>
             <pattern id={`${uid}-grid`} width="37" height="37" patternUnits="userSpaceOnUse">
@@ -170,8 +169,8 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
             </pattern>
           </defs>
           <rect width="600" height="440" fill={`url(#${uid}-grid)`} />
-          <text x="22" y="26" fill="#90a3b7" fontSize="11" fontFamily="inherit" letterSpacing="1.5">НЬЮТОНОВСКАЯ МЕХАНИКА · 2D</text>
-          <text x="22" y="44" fill="#90a3b7" fontSize="10" fontFamily="inherit">Бледные линии — весь рассчитанный путь</text>
+          <text x="22" y="26" fill="#90a3b7" fontSize="11" fontFamily="inherit" letterSpacing={locale === 'zh-CN' ? undefined : '1.5'}>{t("НЬЮТОНОВСКАЯ МЕХАНИКА · 2D")}</text>
+          <text x="22" y="44" fill="#90a3b7" fontSize="10" fontFamily="inherit">{t("Бледные линии — весь рассчитанный путь")}</text>
           {simulation.trails.map((trail, index) => (
             <path key={`future-${index}`} d={path(trail.slice(0, maxIndex + 1))} fill="none" stroke={COLORS[index]} strokeOpacity="0.12" strokeWidth="1.3" />
           ))}
@@ -195,7 +194,7 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
             );
           })}
           <path d={`M22 397v6h${(scaleLength * projection.scale).toFixed(2)}v-6`} fill="none" stroke="#90a3b7" strokeWidth="1" />
-          <text x="22" y="420" fill="#90a3b7" fontSize="10" fontFamily="inherit">{scaleLength} ед. длины · размер тел условный</text>
+          <text x="22" y="420" fill="#90a3b7" fontSize="10" fontFamily="inherit">{t("{length} ед. длины · размер тел условный").replace("{length}", format(scaleLength, 0))}</text>
           <text x="578" y="416" fill="#90a3b7" fontSize="11" fontFamily="inherit" textAnchor="end">t = {format(sample.time, 2)}</text>
         </svg>
       </div>
@@ -204,76 +203,76 @@ function ThreeBodyExperiment({ preset, onPresetChange, advanced, comparisonEnabl
         <div className="playback-controls">
           <button type="button" className="button button-primary" onClick={togglePlayback} aria-pressed={playing}>
             {playing ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
-            {playing ? 'Пауза' : currentIndex === maxIndex ? 'Повторить' : 'Запустить'}
+            {playing ? t('Пауза') : currentIndex === maxIndex ? t('Повторить') : t('Запустить')}
           </button>
           <button type="button" className="button button-secondary" onClick={() => seek(Math.min(currentIndex + 1, maxIndex))} disabled={currentIndex === maxIndex}>
-            <SkipForward size={16} aria-hidden="true" /> Шаг
+            <SkipForward size={16} aria-hidden="true" /> {t("Шаг")}
           </button>
           <button type="button" className="button button-secondary" onClick={reset}>
-            <RotateCcw size={16} aria-hidden="true" /> Сброс
+            <RotateCcw size={16} aria-hidden="true" /> {t("Сброс")}
           </button>
-          <span className="threebody-status" data-testid="playback-status" role="status">{playing ? 'Воспроизведение' : currentIndex === maxIndex ? 'Расчёт показан целиком' : 'На паузе'}</span>
+          <span className="threebody-status" data-testid="playback-status" role="status">{playing ? t('Воспроизведение') : currentIndex === maxIndex ? t('Расчёт показан целиком') : t('На паузе')}</span>
         </div>
         <div className="range-label">
-          <label htmlFor={`${uid}-time`}>Время модели</label>
+          <label htmlFor={`${uid}-time`}>{t("Время модели")}</label>
           <output htmlFor={`${uid}-time`}>{format(sample.time, 2)} / {format(simulation.samples[maxIndex].time, 2)}</output>
         </div>
-        <input id={`${uid}-time`} type="range" min="0" max={maxIndex} step="1" value={currentIndex} onChange={event => seek(Number(event.currentTarget.value))} aria-valuetext={`${format(sample.time, 2)} модельных единиц времени`} />
-        <p className="control-hint">Движение начинается только по вашей команде. «Шаг» показывает следующий сохранённый кадр, а не один шаг интегратора.</p>
+        <input id={`${uid}-time`} type="range" min="0" max={maxIndex} step="1" value={currentIndex} onChange={event => seek(Number(event.currentTarget.value))} aria-valuetext={t("{time} модельных единиц времени").replace("{time}", format(sample.time, 2))} />
+        <p className="control-hint">{t("Движение начинается только по вашей команде. «Шаг» показывает следующий сохранённый кадр, а не один шаг интегратора.")}</p>
         <label className="comparison-toggle" htmlFor={`${uid}-compare`}>
           <input id={`${uid}-compare`} type="checkbox" checked={comparisonEnabled} onChange={event => { reset(); onComparisonChange(event.currentTarget.checked); }} />
-          Сравнить близкие начальные условия
+          {t("Сравнить близкие начальные условия")}
         </label>
         <label className="comparison-toggle" htmlFor={`${uid}-observer`}>
           <input id={`${uid}-observer`} type="checkbox" checked={showObserver} onChange={event => setShowObserver(event.currentTarget.checked)} />
-          Небо неподвижного наблюдателя
+          {t("Небо неподвижного наблюдателя")}
         </label>
         {comparisonEnabled && (
           <div className="comparison-settings">
             <div className="range-label">
-              <label htmlFor={`${uid}-perturbation`}>Изменение начальной скорости Δvₓ</label>
+              <label htmlFor={`${uid}-perturbation`}>{t("Изменение начальной скорости Δvₓ")}</label>
               <output htmlFor={`${uid}-perturbation`}>{tiny(perturbation)}</output>
             </div>
             <input id={`${uid}-perturbation`} type="range" min="1" max="10" step="1" value={Math.round(perturbation * 10000)} onChange={event => { reset(); onPerturbationChange(Number(event.currentTarget.value) / 10000); }} aria-valuetext={tiny(perturbation)} />
-            <p className="control-hint">Меняем vₓ первого тела, затем вычитаем скорость центра масс у всех трёх. Пунктир — второй расчёт с тем же законом и шагом.</p>
+            <p className="control-hint">{t("Меняем vₓ первого тела, затем вычитаем скорость центра масс у всех трёх. Пунктир — второй расчёт с тем же законом и шагом.")}</p>
           </div>
         )}
       </div>
 
       <div className="metric-grid">
-        <div className="metric"><span>Время модели</span><strong data-testid="simulation-time">{format(sample.time, 2)}</strong><small>Условные единицы, не годы</small></div>
-        <div className="metric"><span>Полная энергия E</span><strong>{format(sample.energy, 5)}</strong><small>Кинетическая + потенциальная</small></div>
-        <div className="metric"><span>Дрейф энергии</span><strong data-testid="energy-drift">{tiny(drift * 100)}%</strong><small>От начального значения</small></div>
+        <div className="metric"><span>{t("Время модели")}</span><strong data-testid="simulation-time">{format(sample.time, 2)}</strong><small>{t("Условные единицы, не годы")}</small></div>
+        <div className="metric"><span>{t("Полная энергия E")}</span><strong>{format(sample.energy, 5)}</strong><small>{t("Кинетическая + потенциальная")}</small></div>
+        <div className="metric"><span>{t("Дрейф энергии")}</span><strong data-testid="energy-drift">{tiny(drift * 100)}%</strong><small>{t("От начального значения")}</small></div>
       </div>
       {showObserver && <ObserverSky bodies={sample.bodies} time={sample.time} />}
 
       {comparisonEnabled && (
-        <p className="lab-note comparison-result" role="status">Среднеквадратичное расхождение положений: <strong>{format(difference, 5)}</strong> ед. длины. Видимое расхождение само по себе не доказывает хаос.</p>
+        <p className="lab-note comparison-result" role="status">{t("Среднеквадратичное расхождение положений:")} <strong>{format(difference, 5)}</strong> {t("ед. длины. Видимое расхождение само по себе не доказывает хаос.")}</p>
       )}
       {(simulation.halted || comparison?.halted) && (
-        <p className="lab-note" role="status"><strong>Расчёт ограничен:</strong> {simulation.reason || comparison?.reason} Показаны последние состояния до защитной остановки; измените начальные условия для другого опыта.</p>
+        <p className="lab-note" role="status"><strong>{t("Расчёт ограничен:")}</strong> {t(simulation.reason || comparison?.reason || '')} {t("Показаны последние состояния до защитной остановки; измените начальные условия для другого опыта.")}</p>
       )}
 
       <div className="lab-note">
-        <h3>{preset === 'triangle' ? 'Три тела могут двигаться упорядоченно' : preset === 'figure-eight' ? 'Одна орбита, три участника' : 'Один закон, разные траектории'}</h3>
-        <p>{PRESETS.find(option => option.id === preset)?.description} {preset === 'triangle' ? 'Расстояния сохраняются благодаря специальным начальным условиям. Общее решение трёх тел так не выглядит.' : preset === 'figure-eight' ? 'Тела проходят по одной кривой со сдвигом во времени. Приближённое воспроизведение не заменяет математическое доказательство периодичности.' : 'Включите сравнение и прокрутите время. Отличайте чувствительность к начальным условиям от численной погрешности.'}</p>
+        <h3>{preset === 'triangle' ? t('Три тела могут двигаться упорядоченно') : preset === 'figure-eight' ? t('Одна орбита, три участника') : t('Один закон, разные траектории')}</h3>
+        <p>{t(PRESETS.find(option => option.id === preset)?.description ?? '')} {preset === 'triangle' ? t('Расстояния сохраняются благодаря специальным начальным условиям. Общее решение трёх тел так не выглядит.') : preset === 'figure-eight' ? t('Тела проходят по одной кривой со сдвигом во времени. Приближённое воспроизведение не заменяет математическое доказательство периодичности.') : t('Включите сравнение и прокрутите время. Отличайте чувствительность к начальным условиям от численной погрешности.')}</p>
       </div>
 
       <details className="formula-card" open={advanced || undefined}>
-        <summary>Координаты и точность расчёта</summary>
+        <summary>{t("Координаты и точность расчёта")}</summary>
         <div className="coordinate-table-wrap">
           <table className="coordinate-table">
-            <caption>Положения в момент t = {format(sample.time, 2)}, относительно центра масс</caption>
-            <thead><tr><th scope="col">Тело</th><th scope="col">x</th><th scope="col">y</th></tr></thead>
+            <caption>{t("Положения в момент t = {time}, относительно центра масс").replace("{time}", format(sample.time, 2))}</caption>
+            <thead><tr><th scope="col">{t("Тело")}</th><th scope="col">x</th><th scope="col">y</th></tr></thead>
             <tbody>{sample.bodies.map((body, index) => <tr key={index}><th scope="row">{index + 1}</th><td>{format(body.position.x, 5)}</td><td>{format(body.position.y, 5)}</td></tr>)}</tbody>
           </table>
         </div>
         <p className="formula">aᵢ = Σⱼ≠ᵢ Gmⱼ(rⱼ − rᵢ) / |rⱼ − rᵢ|³</p>
-        <p>{NUMERICS.solver}: адаптивный расчёт с абсолютным и относительным допуском 10⁻⁹. Интервал вывода — {format(STEP, 3)}; шаг интегрирования выбирает библиотека. Дрейф = (E(t) − E(0)) / |E(0)|. Начальная энергия: {format(simulation.initialEnergy, 5)}.</p>
-        <p>Модуль полного импульса: {tiny(measurements.momentum)}. Угловой момент: {format(measurements.angularMomentum, 5)}. Минимальное расстояние сейчас: {format(measurements.minDistance, 4)}.</p>
-        <p>Сближение менее 0,03 или относительная ошибка энергии более 1% останавливают расчёт. Малый дрейф энергии не гарантирует точность каждой координаты.</p>
+        <p>{t("{solver}: адаптивный расчёт с абсолютным и относительным допуском 10⁻⁹. Интервал вывода — {interval}; шаг интегрирования выбирает библиотека. Дрейф = (E(t) − E(0)) / |E(0)|. Начальная энергия: {energy}.").replace("{solver}", NUMERICS.solver).replace("{interval}", format(STEP, 3)).replace("{energy}", format(simulation.initialEnergy, 5))}</p>
+        <p>{t("Модуль полного импульса: {momentum}. Угловой момент: {angular}. Минимальное расстояние сейчас: {distance}.").replace("{momentum}", tiny(measurements.momentum)).replace("{angular}", format(measurements.angularMomentum, 5)).replace("{distance}", format(measurements.minDistance, 4))}</p>
+        <p>{t("Сближение менее 0,03 или относительная ошибка энергии более 1% останавливают расчёт. Малый дрейф энергии не гарантирует точность каждой координаты.")}</p>
       </details>
-      <p className="model-boundary">Три точечные массы на плоскости, ньютоновская гравитация. Это учебная модель, а не реконструкция Трисоляриса: здесь нет размеров звёзд, планеты, климата и эффектов относительности.</p>
+      <p className="model-boundary">{t("Три точечные массы на плоскости, ньютоновская гравитация. Это учебная модель, а не реконструкция Трисоляриса: здесь нет размеров звёзд, планеты, климата и эффектов относительности.")}</p>
     </section>
   );
 }

@@ -1,3 +1,4 @@
+import { LocaleProvider, useLocale } from "./i18n";
 import { useEffect, useState } from "react";
 import {
   ArrowDown,
@@ -19,8 +20,10 @@ import {
 import { DimensionDemo } from "./features/DimensionDemo";
 import { GeometryLab } from "./features/GeometryLab";
 import { ThreeBodyLab } from "./features/ThreeBodyLab";
-import { lessons } from "./content/curriculum";
-import { sources } from "./content/sources";
+import { lessons as lessonsRu } from "./content/curriculum";
+import { lessonsZh } from "./content/curriculum.zh";
+import { sources as sourcesRu } from "./content/sources";
+import { sourcesZh } from "./content/sources.zh";
 import {
   defaults,
   readProgress,
@@ -32,6 +35,22 @@ import {
 
 export default function App() {
   const [session, setSession] = useState(() => readSession(location.search));
+  return (
+    <LocaleProvider locale={session.language}>
+      <AppContent session={session} setSession={setSession} />
+    </LocaleProvider>
+  );
+}
+function AppContent({
+  session,
+  setSession,
+}: {
+  session: Session;
+  setSession: React.Dispatch<React.SetStateAction<Session>>;
+}) {
+  const { t, locale, number } = useLocale();
+  const lessons = locale === "zh-CN" ? lessonsZh : lessonsRu;
+  const sources = locale === "zh-CN" ? sourcesZh : sourcesRu;
   const [completed, setCompleted] = useState(readProgress);
   const [answer, setAnswer] = useState<number | null>(null);
   const [feedback, setFeedback] = useState("");
@@ -50,7 +69,7 @@ export default function App() {
   useEffect(() => {
     setAnswer(null);
     setFeedback("");
-  }, [session.lesson]);
+  }, [session.lesson, locale]);
   function openLesson(index: number) {
     const l = lessons[index];
     update({
@@ -72,7 +91,9 @@ export default function App() {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       setFeedback(
-        "Ссылка находится в адресной строке браузера. Её можно скопировать вручную.",
+        t(
+          "Ссылка находится в адресной строке браузера. Её можно скопировать вручную.",
+        ),
       );
     }
   }
@@ -117,31 +138,51 @@ export default function App() {
   return (
     <>
       <a className="skip-link" href="#main">
-        К содержимому
+        {t("К содержимому")}
       </a>
       <header className="topbar">
+        <div className="language-control">
+          <label htmlFor="language">Language / 语言</label>
+          <select
+            aria-label="Language / 语言"
+            id="language"
+            value={session.language}
+            onChange={(event) =>
+              update({ language: event.target.value as Session["language"] })
+            }
+          >
+            <option value="ru">Русский</option>
+            <option value="zh-CN">简体中文</option>
+          </select>
+        </div>
         <a className="brand" href="?">
           <span className="brand-mark">
             <Orbit size={25} />
           </span>
           <span>
-            контур
-            <span className="brand-caption">ЛАБОРАТОРИЯ ВОЗМОЖНЫХ МИРОВ</span>
+            {t("контур")}
+            <span className="brand-caption">
+              {t("ЛАБОРАТОРИЯ ВОЗМОЖНЫХ МИРОВ")}
+            </span>
           </span>
         </a>
-        <nav aria-label="Основная навигация">
+        <nav aria-label={t("Основная навигация")}>
           {(
             [
-              { id: "journey", name: "Маршрут", icon: Compass },
-              { id: "lab", name: "Лаборатория", icon: FlaskConical },
-              { id: "library", name: "Основания", icon: BookOpen },
+              { id: "journey", name: t("Маршрут"), icon: Compass },
+              { id: "lab", name: t("Лаборатория"), icon: FlaskConical },
+              { id: "library", name: t("Основания"), icon: BookOpen },
             ] as const
           ).map((item) => (
             <button
               key={item.id}
               aria-current={session.view === item.id ? "page" : undefined}
               className={session.view === item.id ? "nav-active" : ""}
-              onClick={() => item.id === "journey" ? openLesson(session.lesson) : update({ view: item.id })}
+              onClick={() =>
+                item.id === "journey"
+                  ? openLesson(session.lesson)
+                  : update({ view: item.id })
+              }
             >
               <item.icon size={16} />
               {item.name}
@@ -150,11 +191,11 @@ export default function App() {
         </nav>
         <button
           className="share-button"
-          aria-label={copied ? "Ссылка скопирована" : "Поделиться опытом"}
+          aria-label={copied ? t("Ссылка скопирована") : t("Поделиться опытом")}
           onClick={share}
         >
           <Link2 size={16} />
-          <span>{copied ? "Скопировано" : "Поделиться опытом"}</span>
+          <span>{copied ? t("Скопировано") : t("Поделиться опытом")}</span>
         </button>
       </header>
       <main id="main">
@@ -163,17 +204,17 @@ export default function App() {
             <section className="hero">
               <div className="hero-copy">
                 <p className="eyebrow">
-                  <span /> НАУКА ПО ТУ СТОРОНУ СЮЖЕТА
+                  <span /> {t("НАУКА ПО ТУ СТОРОНУ СЮЖЕТА")}
                 </p>
                 <h1>
-                  Привычный мир.
+                  {t("Привычный мир.")}
                   <br />
-                  <em>Непривычные правила.</em>
+                  <em>{t("Непривычные правила.")}</em>
                 </h1>
                 <p className="hero-description">
-                  Может ли треугольник иметь три прямых угла? Почему три солнца
-                  так трудно предсказать? Проверьте сами — в опытах по мотивам
-                  трилогии «Задача трёх тел».
+                  {t(
+                    "Может ли треугольник иметь три прямых угла? Почему три солнца так трудно предсказать? Проверьте сами — в опытах по мотивам трилогии «Задача трёх тел».",
+                  )}
                 </p>
                 <div className="hero-actions">
                   <a
@@ -181,10 +222,12 @@ export default function App() {
                     onClick={() => openLesson(0)}
                     className="primary-button"
                   >
-                    К первому опыту <ArrowDown size={17} />
+                    {t("К первому опыту")}
+                    <ArrowDown size={17} />
                   </a>
                   <span className="hero-meta">
-                    6 опытов <span>·</span> в своём темпе
+                    {t("6 опытов")}
+                    <span>·</span> {t("в своём темпе")}
                   </span>
                 </div>
               </div>
@@ -260,23 +303,25 @@ export default function App() {
                   />
                 </svg>
                 <span className="art-caption">
-                  На сфере правила знакомого треугольника меняются.
+                  {t("На сфере правила знакомого треугольника меняются.")}
                 </span>
               </div>
             </section>
             <div className="section-heading">
               <div>
-                <p className="eyebrow dark">ИССЛЕДОВАТЕЛЬСКИЙ МАРШРУТ</p>
-                <h2>От вопроса — к собственному открытию</h2>
+                <p className="eyebrow dark">{t("ИССЛЕДОВАТЕЛЬСКИЙ МАРШРУТ")}</p>
+                <h2>{t("От вопроса — к собственному открытию")}</h2>
               </div>
               <span className="progress-label">
                 <CheckCircle2 size={16} />
-                {completed.length} из {lessons.length} пройдено
+                {locale === "zh-CN"
+                  ? `已完成 ${completed.length} / ${lessons.length}`
+                  : `${completed.length} из ${lessons.length} пройдено`}
               </span>
             </div>
             <section className="journey-layout" id="experiment">
               <aside className="journey-sidebar">
-                <p className="sidebar-label">ВАШИ ЭКСПЕРИМЕНТЫ</p>
+                <p className="sidebar-label">{t("ВАШИ ЭКСПЕРИМЕНТЫ")}</p>
                 <ol className="lesson-list">
                   {lessons.map((l, index) => (
                     <li key={l.id}>
@@ -308,17 +353,22 @@ export default function App() {
                 <div className="sidebar-note">
                   <GraduationCap size={20} />
                   <p>
-                    Здесь нет нужного уровня подготовки. Начните с наблюдения, а
-                    формулы откройте, когда захотите.
+                    {t(
+                      "Здесь нет нужного уровня подготовки. Начните с наблюдения, а формулы откройте, когда захотите.",
+                    )}
                   </p>
                 </div>
               </aside>
               <article className="lesson-content">
                 <div className="lesson-intro">
                   <div className="lesson-kicker">
-                    <span>ОПЫТ {current.number}</span>
                     <span>
-                      {current.lab === "geometry" ? "ГЕОМЕТРИЯ" : "ДИНАМИКА"}
+                      {t("ОПЫТ")} {current.number}
+                    </span>
+                    <span>
+                      {current.lab === "geometry"
+                        ? t("ГЕОМЕТРИЯ")
+                        : t("ДИНАМИКА")}
                     </span>
                   </div>
                   <h2>{current.question}</h2>
@@ -336,7 +386,7 @@ export default function App() {
                   )}
                   {current.hypothesis && (
                     <p className="hypothesis">
-                      <strong>Перед опытом:</strong> {current.hypothesis}
+                      <strong>{t("Перед опытом:")}</strong> {current.hypothesis}
                     </p>
                   )}
                   <div className="task-strip">
@@ -344,14 +394,14 @@ export default function App() {
                       <Compass size={18} />
                     </span>
                     <p>
-                      <strong>Попробуйте</strong>
+                      <strong>{t("Попробуйте")}</strong>
                       {current.experiment}
                     </p>
                   </div>
                 </div>
                 <div className="lab-header">
                   <span>
-                    <FlaskConical size={16} /> ИНТЕРАКТИВНЫЙ ОПЫТ
+                    <FlaskConical size={16} /> {t("ИНТЕРАКТИВНЫЙ ОПЫТ")}
                   </span>
                   <button
                     className="level-button"
@@ -359,7 +409,7 @@ export default function App() {
                     onClick={() => update({ advanced: !session.advanced })}
                   >
                     <Layers3 size={15} />
-                    {session.advanced ? "С формулами" : "Без формул"}
+                    {session.advanced ? t("С формулами") : t("Без формул")}
                     <span
                       className={"switch " + (session.advanced ? "on" : "")}
                     />
@@ -368,7 +418,7 @@ export default function App() {
                 {lab}
                 {current.id === "boundary" && <DimensionDemo />}
                 <div className="observation">
-                  <span className="eyebrow dark">ЧТО ЗДЕСЬ ВАЖНО</span>
+                  <span className="eyebrow dark">{t("ЧТО ЗДЕСЬ ВАЖНО")}</span>
                   <p>{current.observe}</p>
                   <small>{current.limit}</small>
                 </div>
@@ -399,12 +449,13 @@ export default function App() {
                       onClick={confirm}
                       disabled={answer === null}
                     >
-                      Проверить вывод <Check size={16} />
+                      {t("Проверить вывод")}
+                      <Check size={16} />
                     </button>
                     {completed.includes(current.id) && (
                       <span className="success">
                         <CheckCircle2 size={16} />
-                        Опыт пройден
+                        {t("Опыт пройден")}
                       </span>
                     )}
                   </div>
@@ -419,14 +470,14 @@ export default function App() {
                     onClick={() => openLesson(session.lesson - 1)}
                   >
                     <ArrowLeft size={16} />
-                    Предыдущий
+                    {t("Предыдущий")}
                   </button>
                   <button
                     className="text-button"
                     disabled={session.lesson === lessons.length - 1}
                     onClick={() => openLesson(session.lesson + 1)}
                   >
-                    Следующий опыт
+                    {t("Следующий опыт")}
                     <ArrowRight size={16} />
                   </button>
                 </div>
@@ -437,23 +488,25 @@ export default function App() {
         {session.view === "lab" && (
           <section className="standalone">
             <div className="page-heading">
-              <p className="eyebrow dark">СВОБОДНОЕ ИССЛЕДОВАНИЕ</p>
-              <h1>Лаборатория</h1>
-              <p>Один параметр. Одно изменение. Наблюдаемый результат.</p>
+              <p className="eyebrow dark">{t("СВОБОДНОЕ ИССЛЕДОВАНИЕ")}</p>
+              <h1>{t("Лаборатория")}</h1>
+              <p>
+                {t("Один параметр. Одно изменение. Наблюдаемый результат.")}
+              </p>
             </div>
             <div className="standalone-toolbar">
-              <div className="segmented" aria-label="Лаборатория">
+              <div className="segmented" aria-label={t("Лаборатория")}>
                 <button
                   aria-pressed={session.lab === "geometry"}
                   onClick={() => update({ lab: "geometry" })}
                 >
-                  Геометрия
+                  {t("Геометрия")}
                 </button>
                 <button
                   aria-pressed={session.lab === "threebody"}
                   onClick={() => update({ lab: "threebody" })}
                 >
-                  Три тела
+                  {t("Три тела")}
                 </button>
               </div>
               <button
@@ -461,7 +514,7 @@ export default function App() {
                 aria-pressed={session.advanced}
                 onClick={() => update({ advanced: !session.advanced })}
               >
-                Формулы и метод
+                {t("Формулы и метод")}
                 <span className={"switch " + (session.advanced ? "on" : "")} />
               </button>
               <button
@@ -477,7 +530,7 @@ export default function App() {
                 }
               >
                 <RotateCcw size={15} />
-                Сбросить
+                {t("Сбросить")}
               </button>
             </div>
             {lab}
@@ -486,44 +539,46 @@ export default function App() {
         {session.view === "library" && (
           <section className="standalone library">
             <div className="page-heading">
-              <p className="eyebrow dark">ПРОВЕРЯЕМЫЕ ОСНОВАНИЯ</p>
-              <h1>Где заканчивается модель</h1>
+              <p className="eyebrow dark">{t("ПРОВЕРЯЕМЫЕ ОСНОВАНИЯ")}</p>
+              <h1>{t("Где заканчивается модель")}</h1>
               <p>
-                Вопросы взяты из художественного мира. Ответы нужно проверять за
-                его пределами.
+                {t(
+                  "Вопросы взяты из художественного мира. Ответы нужно проверять за его пределами.",
+                )}
               </p>
             </div>
             <div className="principle-grid">
               <article>
-                <span>01 / ГЕОМЕТРИЯ</span>
-                <h2>Поверхность — не Вселенная</h2>
+                <span>{t("01 / ГЕОМЕТРИЯ")}</span>
+                <h2>{t("Поверхность — не Вселенная")}</h2>
                 <p>
-                  Сфера и диск Пуанкаре описывают двумерные геометрии постоянной
-                  кривизны. Мы измеряем внутренние углы и длины. Это не модель
-                  пространства-времени и не реализация метрики FLRW.
+                  {t(
+                    "Сфера и диск Пуанкаре описывают двумерные геометрии постоянной кривизны. Мы измеряем внутренние углы и длины. Это не модель пространства-времени и не реализация метрики FLRW.",
+                  )}
                 </p>
               </article>
               <article>
-                <span>02 / ДИНАМИКА</span>
-                <h2>Расчёт — не пророчество</h2>
+                <span>{t("02 / ДИНАМИКА")}</span>
+                <h2>{t("Расчёт — не пророчество")}</h2>
                 <p>
-                  Точечные массы, ньютоновская гравитация и безразмерные
-                  единицы. Библиотека ODEX подбирает шаг по заданной точности.
-                  При тесном сближении или большой ошибке расчёт
-                  останавливается.
+                  {t(
+                    "Точечные массы, ньютоновская гравитация и безразмерные единицы. Библиотека ODEX подбирает шаг по заданной точности. При тесном сближении или большой ошибке расчёт останавливается.",
+                  )}
                 </p>
               </article>
               <article>
-                <span>03 / ХУДОЖЕСТВЕННЫЙ МИР</span>
-                <h2>Метафора — не доказательство</h2>
+                <span>{t("03 / ХУДОЖЕСТВЕННЫЙ МИР")}</span>
+                <h2>{t("Метафора — не доказательство")}</h2>
                 <p>
-                  Три солнца дают повод изучить динамику. Сюжеты о размерностях
-                  — геометрию. Опыты не воспроизводят технологии, цивилизации
-                  или космологию трилогии.
+                  {t(
+                    "Три солнца дают повод изучить динамику. Сюжеты о размерностях — геометрию. Опыты не воспроизводят технологии, цивилизации или космологию трилогии.",
+                  )}
                 </p>
               </article>
             </div>
-            <h2 className="source-heading">Источники и дальнейшее чтение</h2>
+            <h2 className="source-heading">
+              {t("Источники и дальнейшее чтение")}
+            </h2>
             <div className="source-list">
               {sources.map((s, i) => (
                 <a key={s.url} href={s.url} target="_blank" rel="noreferrer">
@@ -540,19 +595,18 @@ export default function App() {
             <div className="method-note">
               <BookOpen size={22} />
               <div>
-                <h3>Открытый метод</h3>
+                <h3>{t("Открытый метод")}</h3>
                 <p>
-                  Исходники, тесты математических моделей и исследовательские
-                  заметки доступны в репозитории. Для воспроизведения опыта
-                  достаточно ссылки: она сохраняет выбранную модель и параметры,
-                  но не личный прогресс.
+                  {t(
+                    "Исходники, тесты математических моделей и исследовательские заметки доступны в репозитории. Для воспроизведения опыта достаточно ссылки: она сохраняет выбранную модель и параметры, но не личный прогресс.",
+                  )}
                 </p>
                 <a
                   href="https://github.com/mmkolpakov/Geometry-System"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Открыть репозиторий ↗
+                  {t("Открыть репозиторий ↗")}
                 </a>
               </div>
             </div>
@@ -562,18 +616,20 @@ export default function App() {
       <footer className="site-footer">
         <span className="footer-brand">
           <Orbit size={18} />
-          контур
+          {t("контур")}
         </span>
         <span>
-          Независимая образовательная лаборатория · по мотивам трилогии Лю
-          Цысиня
+          {t(
+            "Независимая образовательная лаборатория · по мотивам трилогии Лю Цысиня",
+          )}
         </span>
         <a
           href="https://github.com/mmkolpakov/Geometry-System"
           target="_blank"
           rel="noreferrer"
         >
-          Код и метод <ExternalLink size={13} />
+          {t("Код и метод")}
+          <ExternalLink size={13} />
         </a>
       </footer>
     </>

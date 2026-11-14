@@ -4,6 +4,7 @@ export type Lab = "geometry" | "threebody";
 export type Geometry = "flat" | "sphere" | "hyperbolic";
 export type Preset = "figure-eight" | "triangle" | "chaotic";
 export interface Session {
+  language: "ru" | "zh-CN";
   view: View;
   lab: Lab;
   geometry: Geometry;
@@ -16,6 +17,7 @@ export interface Session {
   sampleIndex: number;
 }
 export const defaults: Session = {
+  language: "ru",
   view: "journey",
   lab: "geometry",
   geometry: "flat",
@@ -38,13 +40,19 @@ export function readSession(search: string): Session {
   const lesson = Number(q.get("lesson") ?? 0);
   const frame = Number(q.get("frame") ?? 0);
   const delta = Number(q.get("dv") ?? 1);
-  const lessonIndex = Number.isInteger(lesson) ? Math.max(0, Math.min(lessons.length-1, lesson)) : 0;
+  const lessonIndex = Number.isInteger(lesson)
+    ? Math.max(0, Math.min(lessons.length - 1, lesson))
+    : 0;
   const selected = lessons[lessonIndex];
   const view = has(q.get("view"), ["journey", "lab", "library"], defaults.view);
   return {
+    language: q.get("lang")?.startsWith("zh") ? "zh-CN" : "ru",
     view,
     // A lesson's instructions and quiz must always use its corresponding laboratory.
-    lab: view === "journey" ? selected.lab : has(q.get("lab"), ["geometry", "threebody"], selected.lab),
+    lab:
+      view === "journey"
+        ? selected.lab
+        : has(q.get("lab"), ["geometry", "threebody"], selected.lab),
     geometry: has(
       q.get("geometry"),
       ["flat", "sphere", "hyperbolic"],
@@ -72,6 +80,7 @@ export function readSession(search: string): Session {
 export function sessionQuery(s: Session) {
   return new URLSearchParams({
     v: "1",
+    lang: s.language,
     view: s.view,
     lab: s.lab,
     geometry: s.geometry,

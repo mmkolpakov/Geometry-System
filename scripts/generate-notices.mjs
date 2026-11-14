@@ -18,4 +18,11 @@ for (const [path, pkg] of Object.entries(lock.packages)) {
   if (candidate) result += readFileSync(join(path, candidate), "utf8") + "\n\n";
 }
 mkdirSync("public", { recursive: true });
-writeFileSync("public/THIRD_PARTY_NOTICES.txt", result);
+writeFileSync(
+  "public/THIRD_PARTY_NOTICES.txt",
+  result
+    .replace(/\r\n/g, "\n")
+    .split("\n")
+    .map((line) => line.trimEnd())
+    .join("\n"),
+);

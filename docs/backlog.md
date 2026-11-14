@@ -1,6 +1,6 @@
 # Backlog первого выпуска
 
-Снимок: **2026-11-14**. База переработки: `51a6033`; рабочая ветка `product/universe-lab`. Карточки созданы в GitHub: [#1–#8](https://github.com/mmkolpakov/Geometry-System/issues?q=is%3Aissue). Все восемь карточек доведены до Done в границах реализованного кандидата: исследования, проверяемые модели, интерфейс, сквозные сценарии и пакет выпуска подготовлены. Это не означает широкую педагогическую валидацию или production-публикацию. Итоговый полный прогон: 17 E2E пройдены одним процессом (18,7 с); 42 unit-теста пройдены. GitHub пока хранит предыдущие стадии и синхронизируется после commit; карточки остаются открытыми до итоговой синхронизации.
+Снимок: **2026-11-14**. База переработки: `51a6033`; проверенный кандидат: [`16e90ed`](https://github.com/mmkolpakov/Geometry-System/commit/16e90edd4d0d9ed6c359137241e70fe8d4294e61), [PR #9](https://github.com/mmkolpakov/Geometry-System/pull/9); рабочая ветка `product/universe-lab`. Карточки созданы в GitHub: [#1–#8](https://github.com/mmkolpakov/Geometry-System/issues?q=is%3Aissue). Все восемь карточек доведены до Done в границах реализованного кандидата: исследования, проверяемые модели, интерфейс, сквозные сценарии и пакет выпуска подготовлены. Это не означает широкую педагогическую валидацию или production-публикацию. Итоговый полный прогон: 17 E2E пройдены одним процессом (18,7 с); 42 unit-теста пройдены. GitHub issues #1–8 синхронизированы со стадией Done для реализации кандидата. Они остаются open до merge и отдельного решения о закрытии; автоматическое закрытие не настроено. Последующие работы созданы как Backlog #10–12.
 
 ## Первичный planning poker
 
@@ -32,7 +32,7 @@ Stage отражает реализованный срез кандидата; D
 - Дефекты ранжированы по влиянию на обучение, научную точность и доступность; есть связь с GS-02–08.
 - Независимый рецензент проверил границы применимости и сценарий новичка.
 
-Неопределённость: глубина проверки первичных источников и объём визуальной ревизии. Evidence: `docs/research/`, `docs/acceptance/`; фактические имена и commit должны быть добавлены при Review.
+Неопределённость: глубина проверки первичных источников и объём визуальной ревизии. Доказательства: исследования и приёмка связаны с точным commit кандидата в карточках #1–8.
 
 ## GS-02 — Проверяемое ядро геометрии
 
@@ -126,7 +126,7 @@ Stage отражает реализованный срез кандидата; D
 - Удалены неиспользуемые AI Studio/Gemini интеграции, importmap, runtime CDN, шаблонные тексты и ложные заявления; лицензии/атрибуции ODEX, d3-geo, gl-matrix и прочих зависимостей включены в сборку.
 - Полный npm audit, включая devDependencies, сообщает 0 известных уязвимостей на момент проверки; нет обязательных ключей AI API и внешних ресурсов для основного сценария.
 - README/runbook описывают setup, ограничения науки, demo, deploy/rollback, целевую площадку и непроверенные условия.
-- Release gate GS-07 подготовлен и предыдущие проверки описаны; заключительный полный прогон 17 E2E ожидается. Публикация не выполнялась, статус ограничен кандидатом и локальным демо.
+- Release gate GS-07 подготовлен и предыдущие проверки описаны; заключительный полный прогон 17 E2E пройден (18,7 с). Публикация не выполнялась, статус ограничен кандидатом и локальным демо.
 
 Кандидат упакован; рекомендован GitHub Pages с ручным workflow. Production deploy и живой URL пока не выполнялись и не проверялись. Готовность артефакта отделена от факта публикации.
 
@@ -136,16 +136,20 @@ Stage отражает реализованный срез кандидата; D
 
 | ID | Следующий результат | Проверка и граница | Stage |
 | --- | --- | --- | --- |
-| NEXT-01 | Исследование с реальными школьниками, читателями, преподавателями и подготовленными пользователями | Протокол `docs/research/product.md`: наблюдение без подсказок, понимание модели и её ограничений; анонимные записи. Агентная приёмка не заменяет эту работу. | Backlog |
-| NEXT-02 | Физические устройства и экранные дикторы | Проверить iOS/Safari, Android, desktop Firefox/WebKit, экранный диктор и увеличение текста; зафиксировать реальные устройства и найденные барьеры. Эмуляция viewport и axe не заменяют эту работу. | Backlog |
-| NEXT-03 | Планетарный наблюдатель и источник сцены Tri-Solar Day | Сначала проверить первичное издание/лицензированный отрывок для NAR-04; затем модель движущегося наблюдателя, размеров звёзд/горизонта и освещённости по `docs/research/traceability.md`. Текущий фиксированный датчик не является планетой или климатом Трисоляриса. | Backlog |
+| [NEXT-01 · #10](https://github.com/mmkolpakov/Geometry-System/issues/10) | Исследование с реальными школьниками, читателями, преподавателями и подготовленными пользователями | Протокол [docs/research/product.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/research/product.md): наблюдение без подсказок, понимание модели и её ограничений; анонимные записи. Агентная приёмка не заменяет эту работу. | Backlog |
+| [NEXT-02 · #11](https://github.com/mmkolpakov/Geometry-System/issues/11) | Физические устройства и экранные дикторы | Проверить iOS/Safari, Android, desktop Firefox/WebKit, экранный диктор и увеличение текста; зафиксировать реальные устройства и найденные барьеры. Эмуляция viewport и axe не заменяют эту работу. | Backlog |
+| [NEXT-03 · #12](https://github.com/mmkolpakov/Geometry-System/issues/12) | Планетарный наблюдатель и источник сцены Tri-Solar Day | Сначала проверить первичное издание/лицензированный отрывок для NAR-04; затем модель движущегося наблюдателя, размеров звёзд/горизонта и освещённости по [docs/research/traceability.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/research/traceability.md). Текущий фиксированный датчик не является планетой или климатом Трисоляриса. | Backlog |
 
 Не включать без отдельной проблемы и исследования: аккаунты/платежи, серверную аналитику поведения, полноразмерную космологическую симуляцию, генерацию объяснений внешним AI API, художественные 3D-сцены без проверяемой учебной цели. Следующие эксперименты выбираются по наблюдению за реальными пользователями, а не по количеству эффектов.
 
 ## Свидетельства кандидата
 
-- `docs/acceptance/baseline.md`, `docs/research/science.md`, `docs/research/product.md`, `docs/research/traceability.md` — исходная проблема, научные границы, аудитории и связь с трилогией.
-- `docs/acceptance/numerical-reference.md`, `scripts/validate_nbody.py` — независимая сверка ODEX с DOP853; `docs/research/dependencies.md` — основания выбора библиотек.
+- [docs/acceptance/baseline.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/acceptance/baseline.md), [docs/research/science.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/research/science.md), [docs/research/product.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/research/product.md), [docs/research/traceability.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/research/traceability.md) — исходная проблема, научные границы, аудитории и связь с трилогией.
+- [docs/acceptance/numerical-reference.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/acceptance/numerical-reference.md), [scripts/validate_nbody.py](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/scripts/validate_nbody.py) — независимая сверка ODEX с DOP853; [docs/research/dependencies.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/research/dependencies.md) — основания выбора библиотек.
 - 42 unit-теста пройдены: 20 geometry, 12 nbody, 4 observer, 6 session. Старая ошибка запуска Vitest на Playwright specs исправлена.
-- `docs/acceptance/ui.md` — уже выполненные проверки; итоговый полный прогон 17 E2E пока ожидается. Не переносить число 17 в «passed» до подтверждения.
-- `docs/acceptance/release.md`, `docs/deployment.md`, `docs/demo.md`, `public/THIRD_PARTY_NOTICES.txt` — пакет, runbook, демо и лицензии. Наличие этих файлов не означает production-публикацию.
+- [docs/acceptance/ui.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/acceptance/ui.md) — итоговый полный прогон 17/17 E2E passed (18,7 с), сценарии и пределы проверки.
+- [docs/acceptance/release.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/acceptance/release.md), [docs/deployment.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/deployment.md), [docs/demo.md](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/docs/demo.md), [public/THIRD_PARTY_NOTICES.txt](https://github.com/mmkolpakov/Geometry-System/blob/16e90edd4d0d9ed6c359137241e70fe8d4294e61/public/THIRD_PARTY_NOTICES.txt) — пакет, runbook, демо и лицензии. Наличие этих файлов не означает production-публикацию.
+
+## GS-09 — Дизайн-система и 简体中文
+
+[Issue #13](https://github.com/mmkolpakov/Geometry-System/issues/13), Stage Review. Обоснованные Apple HIG / Fluent 2 / WCAG / CLReq роли текста,44px controls, китайские шрифты и переносы, i18next, перевод всех6 опытов/лабораторий,47 unit и22 E2E. Финальные8 затронутых проверок повторены после правок. Нативная редактура остаётся в #10.
