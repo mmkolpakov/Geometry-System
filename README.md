@@ -4,6 +4,8 @@ Explore the Solar System and a world with three suns, then test the geometry and
 
 The interface is available in **Russian and Simplified Chinese**. This README and the [model notes](docs/models.md) are in English.
 
+[Open the live demo](https://mmkolpakov.github.io/Geometry-System/) · [Download a release](https://github.com/mmkolpakov/Geometry-System/releases)
+
 ## A look inside
 
 <img src="docs/images/solar-system.png" alt="Solar System overview with the Sun, eight planets, orbit paths and Earth measurements" width="820">
